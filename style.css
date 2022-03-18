@@ -1,0 +1,202 @@
+body {
+  background-color: #c5e9ff;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+header {
+  padding-top: 23px;
+  padding-bottom: 23px;
+  padding-left: 45px;
+  padding-right: 45px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-shadow: 0px 5px 5px black;
+}
+
+header p {
+  display: flex;
+  margin-left: 75px;
+  font-size: 36px;
+}
+
+.imgContainer {
+  display: flex;
+  margin-top: 85px;
+  margin-left: 50px;
+  margin-right: 55px;
+  width: 400px;
+}
+.imgContainer img {
+  width: 100%;
+}
+#mainContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#loginArea {
+  width: 400px;
+  height: 450px;
+
+  margin-top: 40px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+#loginArea p {
+  text-decoration: none;
+}
+
+#titleArea {
+  display: flex;
+  font-size: 36px;
+  margin-bottom: 20px;
+  margin-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#fieldLogIn {
+  width: 320px;
+  height: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.2);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#titleField {
+  margin-left: 42px;
+  font-size: 18px;
+  margin-bottom: 8px;
+  margin-top: 20px;
+}
+
+#buttomLogin {
+  height: 40px;
+  margin-top: 40px;
+  margin-right: 37px;
+  margin-left: auto;
+  font-size: 18px;
+  background: none;
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.2);
+  font-family: "Roboto", sans-serif;
+  padding: 10px;
+}
+
+#buttomRegistration {
+  margin-top: 18px;
+  width: max-content;
+  margin-right: 37px;
+  margin-left: auto;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  background: none;
+  border: none;
+  padding: 10px;
+}
+
+@media (max-width: 880px) {
+  #fieldLogIn {
+    width: 80%;
+  }
+
+  #titleField {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #buttomLogin {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #buttomRegistration {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #titleArea {
+    font-size: 25px;
+  }
+  .imgContainer {
+    width: 40%;
+  }
+  #loginArea {
+    width: 40%;
+  }
+}
+
+@media (max-width: 550px) {
+  #mainContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+  #fieldLogIn {
+    width: 80%;
+  }
+
+  .imgContainer {
+    width: 40%;
+  }
+  #loginArea {
+    width: 80%;
+  }
+
+  header p {
+    font-size: 25px;
+    margin-left: 15px;
+  }
+  header img {
+    height: 60%;
+  }
+}
+@media (max-width: 380px) {
+  header {
+    padding-left: 20px;
+  }
+  header p {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 300px) {
+  #mainContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+  #fieldLogIn {
+    width: 80%;
+  }
+
+  .imgContainer {
+    width: 80%;
+  }
+  #loginArea {
+    width: 80%;
+  }
+  header {
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  header img {
+    height: 60%;
+  }
+  header p {
+    font-size: 20px;
+    margin-left: 25px;
+  }
+}
