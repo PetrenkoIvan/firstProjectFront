@@ -51,6 +51,9 @@ let render = () => {
 
   const buttomRegistration = document.createElement("button");
   buttomRegistration.id = "buttomRegistration";
+  buttomRegistration.onclick = () => {
+    window.location.href = "registrationPage.html";
+  };
   buttomRegistration.textContent = "Зарегистрироваться";
 
   const doneRegistrationButton = document.createElement("button");

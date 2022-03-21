@@ -1,3 +1,4 @@
+let flag = 1;
 window.onload = async () => {
   const mainContainer = document.getElementById("mainContainer");
   const loginArea = document.createElement("div");
@@ -47,11 +48,6 @@ let render = () => {
   repeatPassword.id = "fieldLogIn";
   repeatPassword.placeholder = " Password";
 
-  const buttomRegistration = document.createElement("button");
-  buttomRegistration.id = "buttomRegistration";
-  buttomRegistration.textContent = "Зарегистрироваться";
-  buttomRegistration.onclick = () => registrationFun(flag);
-
   const doneRegistrationButton = document.createElement("button");
   doneRegistrationButton.textContent = "Зарегистрироваться";
   doneRegistrationButton.id = "buttomLogin";
@@ -59,7 +55,9 @@ let render = () => {
   const autorizationButton = document.createElement("button");
   autorizationButton.id = "buttomRegistration";
   autorizationButton.textContent = "Авторизоваться";
-  autorizationButton.onclick = () => autorizationFun(flag);
+  autorizationButton.onclick = () => {
+    window.location.href = "loginPage.html";
+  };
   header.appendChild(titlePage);
   loginArea.appendChild(titleArea);
   if (flag === 1) {
@@ -73,15 +71,6 @@ let render = () => {
     loginArea.appendChild(repeatPassword);
     loginArea.appendChild(doneRegistrationButton);
     loginArea.appendChild(autorizationButton);
-  } else {
-    titlePage.textContent = "Войти в систему";
-    titleArea.textContent = "Войти в систему";
-    loginArea.appendChild(titleField);
-    loginArea.appendChild(fieldLogin);
-    loginArea.appendChild(titlePassword);
-    loginArea.appendChild(fieldPassword);
-    loginArea.appendChild(buttomLogin);
-    loginArea.appendChild(buttomRegistration);
   }
 };
 
