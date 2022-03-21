@@ -36,16 +36,19 @@ let render = () => {
   titlePassword.textContent = "Password";
   titlePassword.id = "titleField";
 
-  const buttomLogin = document.createElement("button");
-  buttomLogin.textContent = "Войти";
-  buttomLogin.id = "buttomLogin";
+  const buttonLogin = document.createElement("button");
+  buttonLogin.textContent = "Войти";
+  buttonLogin.id = "buttonLogin";
+  buttonLogin.onclick = () => {
+    window.location.href = "personalArea.html";
+  };
 
-  const buttomRegistration = document.createElement("button");
-  buttomRegistration.id = "buttomRegistration";
-  buttomRegistration.onclick = () => {
+  const buttonRegistration = document.createElement("button");
+  buttonRegistration.id = "buttonRegistration";
+  buttonRegistration.onclick = () => {
     window.location.href = "registrationPage.html";
   };
-  buttomRegistration.textContent = "Зарегистрироваться";
+  buttonRegistration.textContent = "Зарегистрироваться";
 
   header.appendChild(titlePage);
   loginArea.appendChild(titleArea);
@@ -56,8 +59,8 @@ let render = () => {
   loginArea.appendChild(fieldLogin);
   loginArea.appendChild(titlePassword);
   loginArea.appendChild(fieldPassword);
-  loginArea.appendChild(buttomLogin);
-  loginArea.appendChild(buttomRegistration);
+  loginArea.appendChild(buttonLogin);
+  loginArea.appendChild(buttonRegistration);
 };
 
 const regFun = () => {};

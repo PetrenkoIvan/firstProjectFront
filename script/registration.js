@@ -40,9 +40,9 @@ let render = () => {
   titlerepeatPassword.textContent = " Repeat password:";
   titlerepeatPassword.id = "titleField";
 
-  const buttomLogin = document.createElement("button");
-  buttomLogin.textContent = "Войти";
-  buttomLogin.id = "buttomLogin";
+  const buttonLogin = document.createElement("button");
+  buttonLogin.textContent = "Войти";
+  buttonLogin.id = "buttonLogin";
 
   const repeatPassword = document.createElement("input");
   repeatPassword.type = "password";
@@ -52,14 +52,14 @@ let render = () => {
 
   const doneRegistrationButton = document.createElement("button");
   doneRegistrationButton.textContent = "Зарегистрироваться";
-  doneRegistrationButton.id = "buttomLogin";
+  doneRegistrationButton.id = "buttonLogin";
   doneRegistrationButton.onclick = () => {
     checkFun(fieldLogin, fieldPassword, repeatPassword),
-    window.location.href = "personalArea.html";
+      (window.location.href = "personalArea.html");
   };
 
   const autorizationButton = document.createElement("button");
-  autorizationButton.id = "buttomRegistration";
+  autorizationButton.id = "buttonRegistration";
   autorizationButton.textContent = "Авторизоваться";
   autorizationButton.onclick = () => {
     window.location.href = "loginPage.html";
@@ -78,27 +78,15 @@ let render = () => {
   loginArea.appendChild(autorizationButton);
 };
 
-const registrationFun = () => {
-  flag = 1;
-  render();
-};
-
-const autorizationFun = () => {
-  flag = 0;
-  render();
-};
-
 const checkFun = (a, b, c) => {
-  var pattern = /^[A-Za-z0-9]+$/;
+  const pattern = /^[A-Za-z0-9]+$/;
   const checkLogin = pattern.test(a.value);
   const checkPassword = pattern.test(b.value);
   if (a.value.length < 6 || a.value.trim() === "" || checkLogin === false)
-    alert("login");
+    alert("логин должен включать в себя не менее 6 символов");
   if (b.value.length < 6 || b.value.trim() === "" || checkPassword === false)
-    alert("password");
-  if (b.value !== c.value) alert("rep");
-
-  console.log(a.value, b.value, c.value);
+    alert("пароль должен включать в себя не менее 6 символов");
+  if (b.value !== c.value) alert("пароли не совпадают");
 };
 
 const inputValue = (a) => {

@@ -3,6 +3,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: #c5e9ff;
+  font-family: "Roboto", sans-serif;
 }
 
 header {
@@ -14,9 +15,11 @@ header {
   padding-right: 42px;
   padding-top: 23px;
   padding-bottom: 23px;
+  box-shadow: 0px 5px 5px black;
+  margin-bottom: 10px;
 }
 
-.contantPage {
+.contentPage {
   display: flex;
   flex-direction: row;
   padding-left: 90px;
@@ -26,9 +29,46 @@ header {
 
 header p {
   text-decoration: none;
+  font-size: 36px;
 }
 
 header button {
   height: 45px;
-  padding: 9px 42px;
+  padding-left: 42px;
+  padding-right: 42px;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
 }
+
+#createContainer {
+  display: flex;
+  box-shadow: 0px 5px 5px black;
+  height: 120px;
+  padding-left: 24px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  padding-right: 0;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#Field {
+  width: auto;
+  height: 45px;
+  font-family: "Roboto", sans-serif;
+}
+
+#createContainer button {
+  margin-bottom: 12px;
+  margin-top: auto;
+  height: 45px;
+  width: 130px;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+}
+#createContainer p {
+  text-decoration: none;
+}
+

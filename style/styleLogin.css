@@ -84,7 +84,7 @@ header p {
   margin-top: 20px;
 }
 
-#buttomLogin {
+#buttonLogin {
   height: 40px;
   margin-top: 40px;
   margin-right: 37px;
@@ -99,7 +99,7 @@ header p {
   padding: 10px;
 }
 
-#buttomRegistration {
+#buttonRegistration {
   margin-top: 18px;
   width: max-content;
   margin-right: 37px;
@@ -120,11 +120,11 @@ header p {
     margin-left: auto;
     margin-right: auto;
   }
-  #buttomLogin {
+  #buttonLogin {
     margin-left: auto;
     margin-right: auto;
   }
-  #buttomRegistration {
+  #buttonRegistration {
     margin-left: auto;
     margin-right: auto;
   }
@@ -199,4 +199,8 @@ header p {
     font-size: 20px;
     margin-left: 25px;
   }
+}
+
+#blockField {
+  margin-right: 18px;
 }

@@ -87,7 +87,7 @@ header p {
   margin-top: 8px;
 }
 
-#buttomLogin {
+#buttonLogin {
   height: 40px;
   margin-top: 15px;
   margin-right: 37px;
@@ -102,7 +102,7 @@ header p {
   padding: 10px;
 }
 
-#buttomRegistration {
+#buttonRegistration {
   margin-top: 0;
   width: max-content;
   margin-right: 37px;
@@ -124,12 +124,12 @@ header p {
     margin-right: auto;
   }
 
-  #buttomLogin {
+  #buttonLogin {
     margin-left: auto;
     margin-right: auto;
   }
 
-  #buttomRegistration {
+  #buttonRegistration {
     margin-left: auto;
     margin-right: auto;
   }
