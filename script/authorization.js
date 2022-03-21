@@ -21,7 +21,7 @@ let render = () => {
   fieldLogin.placeholder = "Login";
 
   const fieldPassword = document.createElement("input");
-  fieldPassword.type = "text";
+  fieldPassword.type = "password";
   fieldPassword.id = "fieldLogIn";
   fieldPassword.placeholder = "Password";
 
@@ -36,18 +36,9 @@ let render = () => {
   titlePassword.textContent = "Password";
   titlePassword.id = "titleField";
 
-  const titlerepeatPassword = document.createElement("p");
-  titlerepeatPassword.textContent = " Repeat password:";
-  titlerepeatPassword.id = "titleField";
-
   const buttomLogin = document.createElement("button");
   buttomLogin.textContent = "Войти";
   buttomLogin.id = "buttomLogin";
-
-  const repeatPassword = document.createElement("input");
-  repeatPassword.type = "text";
-  repeatPassword.id = "fieldLogIn";
-  repeatPassword.placeholder = " Password";
 
   const buttomRegistration = document.createElement("button");
   buttomRegistration.id = "buttomRegistration";
@@ -56,14 +47,6 @@ let render = () => {
   };
   buttomRegistration.textContent = "Зарегистрироваться";
 
-  const doneRegistrationButton = document.createElement("button");
-  doneRegistrationButton.textContent = "Зарегистрироваться";
-  doneRegistrationButton.id = "buttomLogin";
-
-  const autorizationButton = document.createElement("button");
-  autorizationButton.id = "buttomRegistration";
-  autorizationButton.textContent = "Авторизоваться";
-  autorizationButton.onclick = () => autorizationFun(flag);
   header.appendChild(titlePage);
   loginArea.appendChild(titleArea);
 
