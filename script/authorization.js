@@ -65,7 +65,7 @@ let render = () => {
   loginArea.appendChild(buttonRegistration);
 };
 
-const loginFun = async (a,b) => { 
+const loginFun = async (a, b) => {
   try {
     const resp = await fetch("http://localhost:8080/api/users/login", {
       method: "POST",
@@ -73,7 +73,7 @@ const loginFun = async (a,b) => {
         "Content-Type": "application/json;charset=utf-8",
         "Access-Control-Allow-Origin": "*",
       },
-      
+
       body: JSON.stringify({
         login: a.value,
         password: b.value,
@@ -84,8 +84,10 @@ const loginFun = async (a,b) => {
     login = "";
     password = "";
 
-    if (resp.ok == true) {window.location.href = "personalArea.html"} else {
-      alert("Проверте правильность введенных данных")
+    if (resp.ok == true) {
+      window.location.href = "personalArea.html";
+    } else {
+      alert("Проверте правильность введенных данных");
     }
   } catch (error) {
     console.log(error);
