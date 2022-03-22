@@ -66,14 +66,6 @@ let render = () => {
 };
 
 const loginFun = async (a,b) => { 
-  const pattern = /^[A-Za-z0-9]+$/;
-  const checkLogin = pattern.test(a.value);
-  const checkPassword = pattern.test(b.value);
-  if (a.value.length < 6 || a.value.trim() === "" || checkLogin === false)
-    alert("логин должен включать в себя не менее 6 символов");
-  if (b.value.length < 6 || b.value.trim() === "" || checkPassword === false)
-    alert("пароль должен включать в себя не менее 6 символов");
-    
   try {
     const resp = await fetch("http://localhost:8080/api/users/login", {
       method: "POST",
