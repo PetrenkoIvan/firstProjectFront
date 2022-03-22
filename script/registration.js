@@ -54,8 +54,7 @@ let render = () => {
   doneRegistrationButton.textContent = "Зарегистрироваться";
   doneRegistrationButton.id = "buttonLogin";
   doneRegistrationButton.onclick = () => {
-    checkFun(fieldLogin, fieldPassword, repeatPassword),
-      (window.location.href = "personalArea.html");
+    checkFun(fieldLogin, fieldPassword, repeatPassword);
   };
 
   const autorizationButton = document.createElement("button");
@@ -78,15 +77,48 @@ let render = () => {
   loginArea.appendChild(autorizationButton);
 };
 
-const checkFun = (a, b, c) => {
+const checkFun = async (a, b, c) => {
   const pattern = /^[A-Za-z0-9]+$/;
+  const checkNum = b.value.match(/\d+/);
   const checkLogin = pattern.test(a.value);
   const checkPassword = pattern.test(b.value);
-  if (a.value.length < 6 || a.value.trim() === "" || checkLogin === false)
+  if (checkLogin === false || checkPassword === false) {
+    alert("логин и пароль не должны включать в себя русские буквы");
+  } else if (a.value.length < 6 || a.value.trim() === "") {
     alert("логин должен включать в себя не менее 6 символов");
-  if (b.value.length < 6 || b.value.trim() === "" || checkPassword === false)
-    alert("пароль должен включать в себя не менее 6 символов");
-  if (b.value !== c.value) alert("пароли не совпадают");
+  } else if (
+    b.value.length < 6 ||
+    b.value.trim() === "" ||
+    checkPassword === false ||
+    !checkNum
+  ) {
+    alert(
+      "пароль должен включать в себя не менее 6 символов и хотя бы одну цифру"
+    );
+  } else if (b.value !== c.value) {
+    alert("пароли не совпадают");
+  } else {
+    const resp = await fetch("http://localhost:8080/api/users/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+      },
+
+      body: JSON.stringify({
+        login: a.value,
+        password: b.value,
+      }),
+    });
+
+    a.value = "";
+    b.value = "";
+    c.value = "";
+    login = "";
+    password = "";
+
+    window.location.href = "personalArea.html";
+  }
 };
 
 const inputValue = (a) => {

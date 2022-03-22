@@ -72,3 +72,13 @@ header button {
   text-decoration: none;
 }
 
+#listEntries {
+  display: flex;
+  flex-direction: row;
+  background-color: #C4C4C4;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 25px;
+}
+

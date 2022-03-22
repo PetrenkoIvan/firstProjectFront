@@ -19,11 +19,13 @@ let render = () => {
   fieldLogin.type = "text";
   fieldLogin.id = "fieldLogIn";
   fieldLogin.placeholder = "Login";
+  fieldLogin.addEventListener("change", inputValue(fieldLogin));
 
   const fieldPassword = document.createElement("input");
   fieldPassword.type = "password";
   fieldPassword.id = "fieldLogIn";
   fieldPassword.placeholder = "Password";
+  fieldPassword.addEventListener("change", inputValue(fieldPassword));
 
   const titleArea = document.createElement("p");
   titleArea.id = "titleArea";
@@ -40,7 +42,7 @@ let render = () => {
   buttonLogin.textContent = "Войти";
   buttonLogin.id = "buttonLogin";
   buttonLogin.onclick = () => {
-    window.location.href = "personalArea.html";
+    loginFun(fieldLogin, fieldPassword);
   };
 
   const buttonRegistration = document.createElement("button");
@@ -63,6 +65,44 @@ let render = () => {
   loginArea.appendChild(buttonRegistration);
 };
 
-const regFun = () => {};
+const loginFun = async (a,b) => { 
+  const pattern = /^[A-Za-z0-9]+$/;
+  const checkLogin = pattern.test(a.value);
+  const checkPassword = pattern.test(b.value);
+  if (a.value.length < 6 || a.value.trim() === "" || checkLogin === false)
+    alert("логин должен включать в себя не менее 6 символов");
+  if (b.value.length < 6 || b.value.trim() === "" || checkPassword === false)
+    alert("пароль должен включать в себя не менее 6 символов");
+    
+  try {
+    const resp = await fetch("http://localhost:8080/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+      },
+      
+      body: JSON.stringify({
+        login: a.value,
+        password: b.value,
+      }),
+    });
+    a.value = "";
+    b.value = "";
+    login = "";
+    password = "";
 
-const autorizationFun = () => {};
+    if (resp.ok == true) {window.location.href = "personalArea.html"} else {
+      alert("Проверте правильность введенных данных")
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const inputValue = (a) => {
+  const valueEvent = (event) => {
+    a.value = event.target.value;
+  };
+  return valueEvent;
+};
