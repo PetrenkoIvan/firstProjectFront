@@ -64,7 +64,6 @@ let render = () => {
 };
 
 const loginFun = async (a, b) => {
-  console.log("123123");
   try {
     const resp = await fetch("http://localhost:8080/api/users/login", {
       method: "POST",
