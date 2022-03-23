@@ -193,7 +193,7 @@ header p {
     flex-direction: column;
     align-items: center;
   }
-
+  
   #fieldLogIn {
     width: 80%;
   }
@@ -201,6 +201,7 @@ header p {
   .imgContainer {
     width: 80%;
   }
+
   #loginArea {
     width: 80%;
   }
