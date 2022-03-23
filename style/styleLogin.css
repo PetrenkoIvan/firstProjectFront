@@ -6,6 +6,7 @@ body {
   margin: 0;
   font-family: "Roboto", sans-serif;
 }
+
 header {
   padding-top: 23px;
   padding-bottom: 23px;
@@ -30,9 +31,11 @@ header p {
   margin-right: 55px;
   width: 400px;
 }
+
 .imgContainer img {
   width: 100%;
 }
+
 #mainContainer {
   display: flex;
   flex-direction: row;
@@ -42,12 +45,12 @@ header p {
 #loginArea {
   width: 400px;
   height: 450px;
-
   margin-top: 40px;
   background: #ffffff;
   display: flex;
   flex-direction: column;
 }
+
 #loginArea p {
   text-decoration: none;
 }
@@ -111,6 +114,10 @@ header p {
   padding: 10px;
 }
 
+#blockField {
+  margin-right: 18px;
+}
+
 @media (max-width: 880px) {
   #fieldLogIn {
     width: 80%;
@@ -120,20 +127,25 @@ header p {
     margin-left: auto;
     margin-right: auto;
   }
+
   #buttonLogin {
     margin-left: auto;
     margin-right: auto;
   }
+
   #buttonRegistration {
     margin-left: auto;
     margin-right: auto;
   }
+
   #titleArea {
     font-size: 25px;
   }
+
   .imgContainer {
     width: 40%;
   }
+
   #loginArea {
     width: 40%;
   }
@@ -144,6 +156,7 @@ header p {
     flex-direction: column;
     align-items: center;
   }
+
   #fieldLogIn {
     width: 80%;
   }
@@ -151,6 +164,7 @@ header p {
   .imgContainer {
     width: 40%;
   }
+
   #loginArea {
     width: 80%;
   }
@@ -159,6 +173,7 @@ header p {
     font-size: 25px;
     margin-left: 15px;
   }
+
   header img {
     height: 60%;
   }
@@ -167,6 +182,7 @@ header p {
   header {
     padding-left: 20px;
   }
+
   header p {
     font-size: 22px;
   }
@@ -177,6 +193,7 @@ header p {
     flex-direction: column;
     align-items: center;
   }
+
   #fieldLogIn {
     width: 80%;
   }
@@ -187,20 +204,19 @@ header p {
   #loginArea {
     width: 80%;
   }
+
   header {
     padding: 0;
     align-items: center;
     justify-content: center;
   }
+
   header img {
     height: 60%;
   }
+
   header p {
     font-size: 20px;
     margin-left: 25px;
   }
-}
-
-#blockField {
-  margin-right: 18px;
 }

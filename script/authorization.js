@@ -41,9 +41,7 @@ let render = () => {
   const buttonLogin = document.createElement("button");
   buttonLogin.textContent = "Войти";
   buttonLogin.id = "buttonLogin";
-  buttonLogin.onclick = () => {
-    loginFun(fieldLogin, fieldPassword);
-  };
+  buttonLogin.onclick = () => loginFun(fieldLogin, fieldPassword);
 
   const buttonRegistration = document.createElement("button");
   buttonRegistration.id = "buttonRegistration";
@@ -66,6 +64,7 @@ let render = () => {
 };
 
 const loginFun = async (a, b) => {
+  console.log("123123");
   try {
     const resp = await fetch("http://localhost:8080/api/users/login", {
       method: "POST",
@@ -79,12 +78,15 @@ const loginFun = async (a, b) => {
         password: b.value,
       }),
     });
+    let result = await resp.json();
     a.value = "";
     b.value = "";
     login = "";
     password = "";
 
     if (resp.ok == true) {
+      localStorage.setItem("token", result.token);
+      localStorage.setItem("login", result.login);
       window.location.href = "personalArea.html";
     } else {
       alert("Проверте правильность введенных данных");
