@@ -13,13 +13,13 @@ window.onload = async () => {
   const resp = await fetch("http://localhost:8080/api/entries/getAllEntries", {
     method: "GET",
     headers: {
-      "Authorization": localStorage.getItem("token"),
+      Authorization: localStorage.getItem("token"),
       "Content-Type": "application/json;charset=utf-8",
       "Access-Control-Allow-Origin": "*",
     },
   });
 
-const  result = await resp.json();
+  const result = await resp.json();
   listEntrie = result;
 
   const blockName = document.createElement("div");
@@ -55,11 +55,9 @@ const  result = await resp.json();
   inputName.type = "text";
   inputName.addEventListener("change", inputValue(inputName));
 
-  const inputDoctor = document.createElement("input");
+  const formOne = document.createElement("form");
+  const inputDoctor = document.getElementById("docrors");
   inputDoctor.id = "Field";
-  inputDoctor.type = "list";
-  const listDoctor = document.createElement("DATALIST");
-  inputDoctor.appendChild(listDoctor)
   inputDoctor.addEventListener("change", inputValue(inputDoctor));
 
   const inputDate = document.createElement("input");
@@ -82,7 +80,6 @@ const  result = await resp.json();
   const listEntries = document.createElement("div");
   listEntries.id = "listEntries";
 
-
   const columnArea = document.createElement("div");
   columnArea.id = "columnArea";
 
@@ -104,51 +101,83 @@ const  result = await resp.json();
   complaintsColumn.id = "nameColumn";
   complaintsColumn.textContent = "Жалобы";
 
-const panelTools = document.createElement('div')
-panelTools.id = 'panelTools'
+  const panelTools = document.createElement("div");
+  panelTools.id = "panelTools";
 
-const toolsFiltr = document.createElement('div')
-toolsFiltr.id = 'blockTools'
+  const toolsFiltr = document.createElement("div");
+  toolsFiltr.id = "toolsContainer";
 
-const toolsSorting = document.createElement('div')
-toolsSorting.id = 'blockTools'
+  const toolsSorting = document.createElement("div");
+  toolsSorting.id = "toolsContainer";
 
-const nameTools = document.createElement('p')
-nameTools.id = 'nameTools'
-nameTools.textContent = 'Сортировать по:'
+  const nameTools = document.createElement("p");
+  nameTools.id = "nameTools";
+  nameTools.textContent = "Сортировать по:";
 
-const fildSort = document.createElement('input')
-fildSort.id = 'fildTools'
-fildSort.type = 'List'
+  const fildSort = document.getElementById("sort");
+  fildSort.id = "fildTools";
 
-const textTools = document.createElement('p')
-textTools.id = 'nameTools'
-textTools.textContent = 'Направление:'
+  const textTools = document.createElement("p");
+  textTools.id = "nameTools";
+  textTools.textContent = "Направление:";
 
-const ListSort = document.createElement('input')
-ListSort.id = 'fildTools'
-ListSort.type = 'List'
+  const ListSort = document.getElementById("direction");
+  ListSort.id = "fildTools";
+  ListSort.type = "List";
 
-const blockTools = document.createElement('div')
-blockTools.id = 'blockTools'
+  const blockTools = document.createElement("div");
+  blockTools.id = "blockTools";
 
-const blockSort = document.createElement('div')
-blockSort.id = 'blockTools'
+  const blockSort = document.createElement("div");
+  blockSort.id = "blockTools";
 
-toolsSorting.appendChild(blockTools)
-toolsSorting.appendChild(blockSort)
-blockTools.appendChild(nameTools)
-blockTools.appendChild(fildSort)
-blockSort.appendChild(textTools)
-blockSort.appendChild(ListSort)
+  const nameToolsFiltrWith = document.createElement("p");
+  nameToolsFiltrWith.id = "nameTools";
+  nameToolsFiltrWith.textContent = "С:";
 
+  const filtrWith = document.createElement("input");
+  filtrWith.id = "fildTools";
+  filtrWith.type = "date";
 
-panelTools.appendChild(toolsFiltr)
-panelTools.appendChild(toolsSorting)
+  const nameToolsFiltrTo = document.createElement("p");
+  nameToolsFiltrTo.id = "nameTools";
+  nameToolsFiltrTo.textContent = "По:";
 
-mainContainer.appendChild(panelTools)
-mainContainer.appendChild(listEntries);
+  const filtrTo = document.createElement("input");
+  filtrTo.id = "fildTools";
+  filtrTo.type = "date";
+  filtrTo.value = moment().format("YYYY-MM-DD");
 
+  const blockToolsFiltr = document.createElement("div");
+  blockToolsFiltr.id = "blockTools";
+
+  const blockToolsFiltrSecond = document.createElement("div");
+  blockToolsFiltrSecond.id = "blockTools";
+
+  const buttonFiltr = document.createElement("button");
+  buttonFiltr.id = "buttonFiltr";
+  buttonFiltr.textContent = "Фильтровать";
+
+  toolsFiltr.appendChild(blockToolsFiltr);
+  toolsFiltr.appendChild(blockToolsFiltrSecond);
+  toolsFiltr.appendChild(buttonFiltr);
+  blockToolsFiltr.appendChild(nameToolsFiltrWith);
+  blockToolsFiltr.appendChild(filtrWith);
+  blockToolsFiltrSecond.appendChild(nameToolsFiltrTo);
+  blockToolsFiltrSecond.appendChild(filtrTo);
+
+  toolsSorting.appendChild(blockTools);
+  toolsSorting.appendChild(blockSort);
+  blockTools.appendChild(nameTools);
+  blockTools.appendChild(fildSort);
+  blockSort.appendChild(textTools);
+  blockSort.appendChild(ListSort);
+
+  panelTools.appendChild(toolsSorting);
+  panelTools.appendChild(toolsFiltr);
+
+  mainContainer.appendChild(panelTools);
+  mainContainer.appendChild(listEntries);
 
   const contentList = document.createElement("div");
   contentList.id = "contentList";
@@ -165,6 +194,7 @@ mainContainer.appendChild(listEntries);
   blockComplaints.appendChild(complaintsField);
 
   blockName.appendChild(inputName);
+  formOne.appendChild(blockNameDoctor);
   blockNameDoctor.appendChild(inputDoctor);
   blockDate.appendChild(inputDate);
   blockComplaints.appendChild(inputComplaints);
@@ -245,7 +275,7 @@ const addEntries = async (
     const resp = await fetch("http://localhost:8080/api/entries/", {
       method: "POST",
       headers: {
-        "Authorization": localStorage.getItem("token"),
+        Authorization: localStorage.getItem("token"),
         "Content-Type": "application/json;charset=utf-8",
         "Access-Control-Allow-Origin": "*",
       },
@@ -260,7 +290,7 @@ const addEntries = async (
     const result = await resp.json();
 
     listEntrie = result;
-  } else alert("Заполните все поля")
+  } else alert("Заполните все поля");
 
   inputName.value = "";
   nameDoctor = "";
@@ -286,7 +316,7 @@ const deleteFun = async (id) => {
     {
       method: "DELETE",
       headers: {
-        "Authorization": localStorage.getItem("token"),
+        Authorization: localStorage.getItem("token"),
         "Content-Type": "application/json;charset=utf-8",
         "Access-Control-Allow-Origin": "*",
       },

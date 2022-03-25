@@ -140,11 +140,28 @@ margin: 0;
   display: flex;
   flex-direction: row;
   padding-top: 20px;
-  margin-right: 20px;
   justify-content: end;
-
+padding-right: 20px;
 }
 
 #blockTools p{
   margin-right: 15px;
+}
+
+#toolsContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  margin-bottom: 20px;
+  /* justify-content: space-around ; */
+}
+
+#buttonFiltr{
+  margin-top: 20px;
+  margin-right: 20px;
+  height: 40px;
+}
+
+#fildTools {
+  height: 40px;
 }
