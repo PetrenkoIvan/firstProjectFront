@@ -143,7 +143,7 @@ window.onload = async () => {
   const directionInput = document.createElement("datalist");
   directionInput.id = "direction";
   const directionList = ["По возрастанию", "По убыванию"];
-  
+
   for (let i = 0; i <= directionList.length; i++) {
     const a = new Option("", directionList[i]);
     directionInput.appendChild(a);
@@ -267,6 +267,7 @@ const render = () => {
     const imageEdit = document.createElement("img");
     imageEdit.src = "/img/imgEntries/Edit.svg";
     buttonEdit.appendChild(imageEdit);
+    buttonEdit.onclick = () => editFun(index);
 
     const buttonDelete = document.createElement("button");
     buttonDelete.id = "buttonEntries";
@@ -333,6 +334,7 @@ const addEntries = async (
 const inputValue = (a) => {
   const valueEvent = (event) => {
     a.value = event.target.value;
+    if (a.value.trim() === "") a.value = a.placeholder;
   };
 
   return valueEvent;
@@ -350,6 +352,145 @@ const deleteFun = async (id) => {
       },
     }
   );
+  let result = await resp.json();
+  listEntrie = result;
+
+  render();
+};
+
+const editFun = (index) => {
+  const { nameUser, nameDoctor, date, complaints, id } = listEntrie[index];
+  const modal = document.createElement("div");
+  modal.id = "modal";
+  const modalEdit = document.createElement("div");
+  modalEdit.id = "modalEdit";
+  modal.appendChild(modalEdit);
+  mainContainer.appendChild(modal);
+  modal.style.display = "block";
+
+  const titleContainer = document.createElement("div");
+  titleContainer.id = "titleContainer";
+  const nameContainer = document.createElement("h1");
+  nameContainer.id = "nameContainer";
+  nameContainer.textContent = "Изменить прием";
+  modalEdit.appendChild(titleContainer);
+  titleContainer.appendChild(nameContainer);
+
+  const contentEdit = document.createElement("div");
+  contentEdit.id = "contentEdit";
+  modalEdit.appendChild(contentEdit);
+
+  const userNameBlock = document.createElement("div");
+  userNameBlock.id = "blockEdit";
+  contentEdit.appendChild(userNameBlock);
+
+  const textNameBlock = document.createElement("p");
+  textNameBlock.id = "nameBlock";
+  textNameBlock.textContent = "Имя:";
+  userNameBlock.appendChild(textNameBlock);
+
+  const inputUserName = document.createElement("input");
+  inputUserName.id = "inputEdit";
+  inputUserName.placeholder = nameUser;
+  inputUserName.addEventListener("change", inputValue(inputUserName));
+  userNameBlock.appendChild(inputUserName);
+
+  const doctorNameBlock = document.createElement("div");
+  doctorNameBlock.id = "blockEdit";
+  contentEdit.appendChild(doctorNameBlock);
+
+  const textDoctorNameBlock = document.createElement("p");
+  textDoctorNameBlock.id = "nameBlock";
+  textDoctorNameBlock.textContent = "Врач:";
+  doctorNameBlock.appendChild(textDoctorNameBlock);
+
+  const inputDoctorName = document.createElement("input");
+  inputDoctorName.id = "inputEdit";
+  inputDoctorName.placeholder = nameDoctor;
+  inputDoctorName.addEventListener("change", inputValue(inputDoctorName));
+  doctorNameBlock.appendChild(inputDoctorName);
+
+  const dateBlock = document.createElement("div");
+  dateBlock.id = "blockEdit";
+  contentEdit.appendChild(dateBlock);
+
+  const textDateBlock = document.createElement("p");
+  textDateBlock.id = "nameBlock";
+  textDateBlock.textContent = "Дата:";
+  dateBlock.appendChild(textDateBlock);
+
+  const inputDate = document.createElement("input");
+  inputDate.type = "date";
+  inputDate.id = "inputEdit";
+  inputDate.value = moment(date).format("YYYY-MM-DD");
+  dateBlock.appendChild(inputDate);
+
+  const complaintsBlock = document.createElement("div");
+  complaintsBlock.id = "blockEdit";
+  contentEdit.appendChild(complaintsBlock);
+
+  const textComplaintsBlock = document.createElement("p");
+  textComplaintsBlock.id = "nameBlock";
+  textComplaintsBlock.textContent = "Жалобы:";
+  complaintsBlock.appendChild(textComplaintsBlock);
+
+  const inputcomplaints = document.createElement("input");
+  inputcomplaints.id = "inputEdit";
+  inputcomplaints.placeholder = complaints;
+  inputcomplaints.addEventListener("change", inputValue(inputcomplaints));
+  complaintsBlock.appendChild(inputcomplaints);
+
+  const buttonAreaModal = document.createElement("div");
+  buttonAreaModal.id = "buttonAreaModal";
+  modalEdit.appendChild(buttonAreaModal);
+
+  const closeEdit = document.createElement("button");
+  closeEdit.id = "buttonModule";
+  closeEdit.textContent = "Отмена";
+  closeEdit.onclick = () => {
+    modal.style.display = "none";
+  };
+  buttonAreaModal.appendChild(closeEdit);
+
+  const saveEdit = document.createElement("button");
+  saveEdit.id = "buttonModule";
+  saveEdit.textContent = "Сохранить";
+  saveEdit.onclick = () => {
+    saveEditFun(inputUserName, inputDoctorName, date, inputcomplaints, id);
+    modal.style.display = "none";
+  };
+  buttonAreaModal.appendChild(saveEdit);
+};
+
+const saveEditFun = async (
+  inputUserName,
+  inputDoctorName,
+  date,
+  inputcomplaints,
+  id
+) => {
+  const editField = [inputUserName, inputDoctorName, date, inputcomplaints, id];
+  editField.forEach((element) => {
+    if (element.value == "") {
+      element.value = element.placeholder;
+    }
+  });
+  const resp = await fetch("http://localhost:8080/api/entries/update", {
+    method: "PATCH",
+    headers: {
+      Authorization: localStorage.getItem("token"),
+      "Content-Type": "application/json;charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify({
+      nameUser: inputUserName.value,
+      nameDoctor: inputDoctorName.value,
+      date: date,
+      complaints: inputcomplaints.value,
+      id,
+    }),
+  });
+
   let result = await resp.json();
   listEntrie = result;
 
