@@ -485,13 +485,13 @@ const saveEditFun = async (
     body: JSON.stringify({
       nameUser: inputUserName.value,
       nameDoctor: inputDoctorName.value,
-      date: date,
+      date,
       complaints: inputcomplaints.value,
       id,
     }),
   });
 
-  let result = await resp.json();
+  const result = await resp.json();
   listEntrie = result;
 
   render();
