@@ -68,6 +68,7 @@ const loginFun = async (a, b) => {
     const resp = await fetch("http://localhost:8080/api/users/login", {
       method: "POST",
       headers: {
+        authorization: localStorage.getItem("token"),
         "Content-Type": "application/json;charset=utf-8",
         "Access-Control-Allow-Origin": "*",
       },
