@@ -1,5 +1,4 @@
 let listEntrie = [];
-
 const exitFun = () => {
   window.location.href = "loginPage.html";
 };
@@ -55,10 +54,20 @@ window.onload = async () => {
   inputName.type = "text";
   inputName.addEventListener("change", inputValue(inputName));
 
-  const formOne = document.createElement("form");
-  const inputDoctor = document.getElementById("docrors");
+  const listDoctors = document.createElement("datalist");
+  listDoctors.id = "doctors";
+  const doctorList = ["Петров Петр Петрович", "Иванов Иван Иванович"];
+  for (let i = 0; i <= doctorList.length; i++) {
+    const a = new Option("", doctorList[i]);
+    listDoctors.appendChild(a);
+  }
+  const inputDoctor = document.createElement("input");
+  inputDoctor.type = "text";
   inputDoctor.id = "Field";
+  inputDoctor.name = "inputDoctor";
   inputDoctor.addEventListener("change", inputValue(inputDoctor));
+  inputDoctor.appendChild(listDoctors);
+  inputDoctor.setAttribute("list", "doctors");
 
   const inputDate = document.createElement("input");
   inputDate.id = "Field";
@@ -114,16 +123,36 @@ window.onload = async () => {
   nameTools.id = "nameTools";
   nameTools.textContent = "Сортировать по:";
 
-  const fildSort = document.getElementById("sort");
-  fildSort.id = "fildTools";
+  const sortInput = document.createElement("datalist");
+  sortInput.id = "sort";
+  const sortList = ["Имя", "Врач", "Дата"];
+  for (let i = 0; i <= doctorList.length; i++) {
+    const a = new Option("", sortList[i]);
+    sortInput.appendChild(a);
+  }
+  const fildSort = document.createElement("input");
+  fildSort.type = "text";
+  fildSort.id = "Field";
+  fildSort.appendChild(sortInput);
+  fildSort.setAttribute("list", "sort");
 
   const textTools = document.createElement("p");
   textTools.id = "nameTools";
   textTools.textContent = "Направление:";
 
-  const ListSort = document.getElementById("direction");
-  ListSort.id = "fildTools";
-  ListSort.type = "List";
+  const directionInput = document.createElement("datalist");
+  directionInput.id = "direction";
+  const directionList = ["По возрастанию", "По убыванию"];
+  
+  for (let i = 0; i <= directionList.length; i++) {
+    const a = new Option("", directionList[i]);
+    directionInput.appendChild(a);
+  }
+  const ListSort = document.createElement("input");
+  ListSort.type = "text";
+  ListSort.id = "Field";
+  ListSort.appendChild(directionInput);
+  ListSort.setAttribute("list", "direction");
 
   const blockTools = document.createElement("div");
   blockTools.id = "blockTools";
@@ -194,7 +223,6 @@ window.onload = async () => {
   blockComplaints.appendChild(complaintsField);
 
   blockName.appendChild(inputName);
-  formOne.appendChild(blockNameDoctor);
   blockNameDoctor.appendChild(inputDoctor);
   blockDate.appendChild(inputDate);
   blockComplaints.appendChild(inputComplaints);
