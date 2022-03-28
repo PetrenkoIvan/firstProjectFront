@@ -38,8 +38,13 @@ header button {
   padding-right: 42px;
   margin-top: auto;
   margin-bottom: auto;
-  font-family: "Roboto", sans-serif;
+  font-family: Roboto;
   font-size: 24px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
 }
 
 #createContainer {
@@ -63,20 +68,41 @@ header button {
 #createContainer button {
   height: 45px;
   width: 130px;
-  font-family: "Roboto", sans-serif;
+  font-family: Roboto;
   font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: center;
 }
+
 #createContainer p {
   text-decoration: none;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: center;
 }
 
 #columnArea {
   display: flex;
+  width: 100%;
   flex-direction: row;
   background-color: #c4c4c4;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+}
+
+#columnArea p {
+  align-items: center;
+  text-align: center;
+  width: 20%;
+  margin-left: 5px;
+  margin-right: 26px;
 }
 
 #listEntries {
@@ -112,6 +138,17 @@ header button {
   border-right: 1px solid black;
   border-top: 1px solid black;
   border-bottom: 1px solid black;
+  overflow: scroll;
+}
+
+#contentList {
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
 }
 
 #buttonEntries {
@@ -163,4 +200,115 @@ header button {
 
 #fildTools {
   height: 40px;
+}
+
+#modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+#modalEdit {
+  background-color: #fefefe;
+  margin: 15% auto;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+#contentEdit {
+  display: flex;
+  flex-direction: column;
+  padding-left: 40px;
+  padding-right: 40px;
+  align-items: center;
+}
+
+#contentEdit p {
+  text-decoration: none;
+  margin: 0;
+  margin-top: 24px;
+  margin-bottom: 5px;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+#titleContainer {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  padding-left: 40px;
+  box-shadow: 0px 5px 5px black;
+  display: flex;
+}
+
+#titleContainer h1 {
+  text-decoration: none;
+  margin: 0;
+  display: flex;
+  font-family: Roboto;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 42px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+#buttonAreaModal {
+  margin-top: 60px;
+  box-shadow: 0px 5px 5px black;
+  display: flex;
+  height: 90px;
+  align-items: center;
+  justify-content: end;
+  padding-right: 30px;
+}
+
+#buttonAreaModal button {
+  height: 40px;
+  width: 140px;
+  display: flex;
+  margin-right: 10px;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+}
+
+#blockEdit {
+  width: 100%;
+}
+
+#blockEdit input {
+  width: 100%;
+  height: 40px;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: #fff;
 }
