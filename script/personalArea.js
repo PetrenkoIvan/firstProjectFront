@@ -1,4 +1,5 @@
 let listEntrie = [];
+
 const exitFun = () => {
   window.location.href = "loginPage.html";
 };
@@ -165,7 +166,7 @@ window.onload = async () => {
   nameToolsFiltrWith.textContent = "С:";
 
   const filtrWith = document.createElement("input");
-  filtrWith.id = "fildTools";
+  filtrWith.id = "Field";
   filtrWith.type = "date";
 
   const nameToolsFiltrTo = document.createElement("p");
@@ -173,7 +174,7 @@ window.onload = async () => {
   nameToolsFiltrTo.textContent = "По:";
 
   const filtrTo = document.createElement("input");
-  filtrTo.id = "fildTools";
+  filtrTo.id = "Field";
   filtrTo.type = "date";
   filtrTo.value = moment().format("YYYY-MM-DD");
 
@@ -341,21 +342,66 @@ const inputValue = (a) => {
 };
 
 const deleteFun = async (id) => {
-  const resp = await fetch(
-    `http://localhost:8080/api/entries/delete?id=${id}`,
-    {
-      method: "DELETE",
-      headers: {
-        Authorization: localStorage.getItem("token"),
-        "Content-Type": "application/json;charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-    }
-  );
-  let result = await resp.json();
-  listEntrie = result;
+  const modal = document.createElement("div");
+  modal.id = "modal";
+  const modalDelete = document.createElement("div");
+  modalDelete.id = "modalEdit";
+  modal.appendChild(modalDelete);
+  mainContainer.appendChild(modal);
+  modal.style.display = "block";
 
-  render();
+  const titleContainer = document.createElement("div");
+  titleContainer.id = "titleContainer";
+  const nameContainer = document.createElement("h1");
+  nameContainer.id = "nameContainer";
+  nameContainer.textContent = "Удалить прием";
+  modalDelete.appendChild(titleContainer);
+  titleContainer.appendChild(nameContainer);
+
+  const contentDelete = document.createElement("div");
+  contentDelete.id = "contentDelete";
+  modalDelete.appendChild(contentDelete);
+
+  const deleteMessage = document.createElement("p");
+  deleteMessage.id = "dialogMessafe";
+  deleteMessage.textContent = "Вы действительно хотите удалить прием?";
+  contentDelete.appendChild(deleteMessage);
+
+  const buttonAreaModal = document.createElement("div");
+  buttonAreaModal.id = "buttonAreaModal";
+  modalDelete.appendChild(buttonAreaModal);
+
+  const closeEdit = document.createElement("button");
+  closeEdit.id = "buttonCancel";
+  closeEdit.textContent = "Отмена";
+  closeEdit.onclick = () => {
+    modal.style.display = "none";
+  };
+  buttonAreaModal.appendChild(closeEdit);
+
+  const deleteButton = document.createElement("button");
+  deleteButton.id = "buttonAccess";
+  deleteButton.textContent = "Удалить";
+  deleteButton.onclick = async () => {
+    const resp = await fetch(
+      `http://localhost:8080/api/entries/delete?id=${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+          "Content-Type": "application/json;charset=utf-8",
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+    const result = await resp.json();
+    listEntrie = result;
+
+    render();
+
+    modal.style.display = "none";
+  };
+  buttonAreaModal.appendChild(deleteButton);
 };
 
 const editFun = (index) => {
@@ -445,7 +491,7 @@ const editFun = (index) => {
   modalEdit.appendChild(buttonAreaModal);
 
   const closeEdit = document.createElement("button");
-  closeEdit.id = "buttonModule";
+  closeEdit.id = "buttonCancel";
   closeEdit.textContent = "Отмена";
   closeEdit.onclick = () => {
     modal.style.display = "none";
@@ -453,7 +499,7 @@ const editFun = (index) => {
   buttonAreaModal.appendChild(closeEdit);
 
   const saveEdit = document.createElement("button");
-  saveEdit.id = "buttonModule";
+  saveEdit.id = "buttonAccess";
   saveEdit.textContent = "Сохранить";
   saveEdit.onclick = () => {
     saveEditFun(inputUserName, inputDoctorName, date, inputcomplaints, id);
