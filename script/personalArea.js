@@ -188,9 +188,13 @@ window.onload = async () => {
   buttonFiltr.id = "buttonFiltr";
   buttonFiltr.textContent = "Фильтровать";
 
+  const buttoncleanFiltr = document.createElement("button");
+  buttoncleanFiltr.id = "buttoncleanFiltr";
+
   toolsFiltr.appendChild(blockToolsFiltr);
   toolsFiltr.appendChild(blockToolsFiltrSecond);
   toolsFiltr.appendChild(buttonFiltr);
+  toolsFiltr.appendChild(buttoncleanFiltr);
   blockToolsFiltr.appendChild(nameToolsFiltrWith);
   blockToolsFiltr.appendChild(filtrWith);
   blockToolsFiltrSecond.appendChild(nameToolsFiltrTo);
@@ -542,3 +546,5 @@ const saveEditFun = async (
 
   render();
 };
+
+
