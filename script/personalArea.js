@@ -569,7 +569,18 @@ const filretFun = async (a, b) => {
   };
 
   if (a.value === "" && b.value === "") {
-    alert("Заполните поля для фильтрации");
+    const resp = await fetch("http://localhost:8080/api/entries/getAllEntries", {
+    method: "GET",
+    headers: {
+      Authorization: localStorage.getItem("token"),
+      "Content-Type": "application/json;charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+  const result = await resp.json();
+    listEntrie = result;
+
+    render();
   } else {
     const resp = await fetch("http://localhost:8080/api/entries/filter", {
       method: "POST",
