@@ -84,13 +84,11 @@ const loginFun = async (a, b) => {
     login = "";
     password = "";
 
-    if (resp.ok == true) {
+    if (result.token !== undefined && result.login !== undefined) {
       localStorage.setItem("token", result.token);
       localStorage.setItem("login", result.login);
       window.location.href = "personalArea.html";
-    } else {
-      alert("Проверте правильность введенных данных");
-    }
+    } else alert("Проверте правильность введенных данных");
   } catch (error) {
     console.log(error);
   }

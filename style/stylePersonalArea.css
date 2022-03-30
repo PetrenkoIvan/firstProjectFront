@@ -148,7 +148,6 @@ header button {
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  justify-content: space-between;
   border-left: 1px solid black;
   border-right: 1px solid black;
   border-top: 1px solid black;
@@ -164,6 +163,7 @@ header button {
   line-height: 21px;
   letter-spacing: 0em;
   text-align: left;
+  height: 390px;
 }
 
 #buttonEntries {
