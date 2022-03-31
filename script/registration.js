@@ -53,7 +53,8 @@ let render = () => {
   const doneRegistrationButton = document.createElement("button");
   doneRegistrationButton.textContent = "Зарегистрироваться";
   doneRegistrationButton.id = "buttonLogin";
-  doneRegistrationButton.onclick = () => checkFun(fieldLogin, fieldPassword, repeatPassword);
+  doneRegistrationButton.onclick = () =>
+    checkFun(fieldLogin, fieldPassword, repeatPassword);
 
   const autorizationButton = document.createElement("button");
   autorizationButton.id = "buttonRegistration";
@@ -92,9 +93,10 @@ const checkFun = async (a, b, c) => {
   } else if (b.value !== c.value) {
     alert("пароли не совпадают");
   } else {
-    const resp = await fetch("http://localhost:8080/api/users/", {
+    const resp = await fetch("http://localhost:8080/api/users/registration", {
       method: "POST",
       headers: {
+        Authorization: localStorage.getItem("token"),
         "Content-Type": "application/json;charset=utf-8",
         "Access-Control-Allow-Origin": "*",
       },
@@ -112,11 +114,14 @@ const checkFun = async (a, b, c) => {
     login = "";
     password = "";
 
-    if (resp.ok) {
-      localStorage.setItem("token", result.token);
-      localStorage.setItem("login", result.login);
+    localStorage.setItem("token", result.token);
+     localStorage.setItem("login", result.login);
+     const checkPass = result.token
+     const checkLog = result.login
+
+    if (checkPass !== undefined && checkLog !== undefined) {
       window.location.href = "personalArea.html";
-    } else alert("Пользователь существует");
+    } else alert("Логин занят");
   }
 };
 
