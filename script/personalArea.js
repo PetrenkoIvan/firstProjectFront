@@ -568,38 +568,27 @@ const filretFun = async (a, b) => {
     b.value = event.target.value;
   };
 
-  if (a.value === "" && b.value === "") {
-    const resp = await fetch("http://localhost:8080/api/entries/getAllEntries", {
+  let urlFetch = "http://localhost:8080/api/entries/getAllEntries";
+  let objFetch = {
     method: "GET",
     headers: {
       Authorization: localStorage.getItem("token"),
       "Content-Type": "application/json;charset=utf-8",
       "Access-Control-Allow-Origin": "*",
     },
-  });
-  const result = await resp.json();
-    listEntrie = result;
+  };
 
-    render();
-  } else {
-    const resp = await fetch("http://localhost:8080/api/entries/filter", {
-      method: "POST",
-      headers: {
-        Authorization: localStorage.getItem("token"),
-        "Content-Type": "application/json;charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        dateStart: a.value,
-        dateEnd: b.value,
-      }),
-    });
-
-    const result = await resp.json();
-    listEntrie = result;
-
-    render();
+  if (a.value !== "" || b.value !== "") {
+    objFetch.method = "POST";
+    urlFetch = "http://localhost:8080/api/entries/filter";
+    objFetch.body = JSON.stringify({ dateStart: a.value, dateEnd: b.value });
   }
+
+  const resp = await fetch(urlFetch, objFetch);
+  const result = await resp.json();
+  listEntrie = result;
+
+  render();
 };
 
 const cleanFilretFun = async (a, b) => {
