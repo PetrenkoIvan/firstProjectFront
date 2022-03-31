@@ -1,4 +1,6 @@
 let listEntrie = [];
+let flag = 0;
+
 if (!localStorage.getItem("token") || !localStorage.getItem("token"))
   window.location.href = "loginPage.html";
 
@@ -136,6 +138,22 @@ window.onload = async () => {
   const toolsSorting = document.createElement("div");
   toolsSorting.id = "toolsContainer";
 
+  const buttonOpenSort = document.createElement("button");
+  buttonOpenSort.id = "openButton";
+  buttonOpenSort.textContent = "Сортировка";
+  panelTools.appendChild(buttonOpenSort);
+  buttonOpenSort.onclick = () => {
+    openFun(toolsSorting);
+  };
+
+  const buttonOpenFilter = document.createElement("button");
+  buttonOpenFilter.id = "openButton";
+  buttonOpenFilter.textContent = "Фильтрация";
+  panelTools.appendChild(buttonOpenFilter);
+  buttonOpenFilter.onclick = () => {
+    openFun(toolsFiltr);
+  };
+
   const nameTools = document.createElement("p");
   nameTools.id = "nameTools";
   nameTools.textContent = "Сортировать по:";
@@ -246,10 +264,16 @@ window.onload = async () => {
   contentList.id = "contentList";
   listEntries.appendChild(contentList);
 
+
+const divEmpty = document.createElement('div')
+divEmpty.id = 'divEmpty'
+
   columnArea.appendChild(nameUserColumn);
   columnArea.appendChild(doctorNameColumn);
   columnArea.appendChild(dateColumn);
   columnArea.appendChild(complaintsColumn);
+  // columnArea.appendChild(divEmpty);
+
 
   blockName.appendChild(nameField);
   blockNameDoctor.appendChild(doctorField);
@@ -658,4 +682,10 @@ const cleanFilretFun = async (a, b) => {
   listEntrie = result;
 
   render();
+};
+
+const openFun = (a) => {
+  a.style.display === "flex"
+    ? (a.style.display = "none")
+    : (a.style.display = "flex");
 };

@@ -158,7 +158,7 @@ header p {
   }
 
   .imgContainer {
-    width: 40%;
+    display: none;
   }
 
   #loginArea {
@@ -185,7 +185,7 @@ header p {
   }
 }
 
-@media (max-width: 300px) {
+@media (max-width: 360px) {
   #mainContainer {
     flex-direction: column;
     align-items: center;
@@ -196,7 +196,7 @@ header p {
   }
 
   .imgContainer {
-    width: 80%;
+    width: 60%;
   }
   
   #loginArea {
@@ -204,7 +204,7 @@ header p {
   }
 
   header {
-    padding: 0;
+    padding: 10px;
     align-items: center;
     justify-content: center;
   }
@@ -214,7 +214,7 @@ header p {
   }
 
   header p {
-    font-size: 20px;
+    font-size: 18px;
     margin-left: 25px;
   }
 }
