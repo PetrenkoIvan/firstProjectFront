@@ -1,5 +1,10 @@
 let listEntrie = [];
 
+let sortObj = {
+  filtrSort: "id",
+  direction: "ASC",
+};
+
 const exitFun = () => {
   window.location.href = "loginPage.html";
 };
@@ -132,59 +137,44 @@ window.onload = async () => {
   nameTools.id = "nameTools";
   nameTools.textContent = "Сортировать по:";
 
-  const sortInput = document.createElement("datalist");
-  sortInput.id = "sort";
-  const sortList = ["Имя", "Врач", "Дата", "None"];
-  for (let i = 0; i <= doctorList.length + 1; i++) {
-    const a = new Option("", sortList[i]);
-    sortInput.appendChild(a);
-    console.log(a);
+  const selectInput = document.createElement("SELECT");
+  selectInput.setAttribute("id", "Field");
+  selectInput.name = "selectInput";
+
+  const sortList = ["None", "Имя", "Врач", "Дата"];
+  for (let i = 0; i < sortList.length; i++) {
+    const option = document.createElement("option");
+    option.setAttribute("value", sortList[i]);
+    option.textContent = sortList[i];
+
+    selectInput.appendChild(option);
   }
-  const fildSort = document.createElement("input");
-  fildSort.type = "text";
-  fildSort.id = "Field";
-  fildSort.appendChild(sortInput);
-  fildSort.value = "Имя";
-  fildSort.setAttribute("list", "sort");
-  fildSort.addEventListener("change", inputValue(fildSort), sortFun(fildSort));
-  console.log("fildSort.value", fildSort.value);
+  selectInput.addEventListener("change", sortFun(selectInput));
 
   const textTools = document.createElement("p");
   textTools.id = "nameTools";
   textTools.textContent = "Направление:";
 
-  const directionInput = document.createElement("datalist");
-  directionInput.id = "direction";
-  directionInput.className = "directionInput"
+  const ListSort = document.createElement("SELECT");
+  ListSort.name = "ListSort";
+
   const directionList = ["По возрастанию", "По убыванию"];
-
-  for (let i = 0; i <= directionList.length; i++) {
-    const a = new Option("", directionList[i]);
-    directionInput.appendChild(a);
-  }
-  const ListSort = document.createElement("input");
-  ListSort.type = "text";
-  ListSort.name = "listSort"
-  ListSort.className = 'ListSort'
   ListSort.id = "Field";
-  ListSort.appendChild(directionInput);
-  ListSort.setAttribute("list", "direction");
-  ListSort.addEventListener("change", inputValue(ListSort), sortFun(ListSort));
 
-  $(".ListSort").select(console.log(ListSort.value))
+  for (let i = 0; i < directionList.length; i++) {
+    const option = document.createElement("option");
+    option.setAttribute("value", directionList[i]);
+    option.textContent = directionList[i];
 
-  const but = document.createElement("button");
-  but.id = "but";
-  but.onclick = () => {
-    sortFun(fildSort, ListSort);
-  };
+    ListSort.appendChild(option);
+  }
+  ListSort.addEventListener("change", sortFun(ListSort));
 
   const blockTools = document.createElement("div");
   blockTools.id = "blockTools";
 
   const blockSort = document.createElement("div");
   blockSort.id = "blockTools";
-
   const nameToolsFiltrWith = document.createElement("p");
   nameToolsFiltrWith.id = "nameTools";
   nameToolsFiltrWith.textContent = "С:";
@@ -220,12 +210,10 @@ window.onload = async () => {
   blockToolsFiltrSecond.appendChild(nameToolsFiltrTo);
   blockToolsFiltrSecond.appendChild(filtrTo);
 
-  blockTools.appendChild(but);
-
   toolsSorting.appendChild(blockTools);
   toolsSorting.appendChild(blockSort);
   blockTools.appendChild(nameTools);
-  blockTools.appendChild(fildSort);
+  blockTools.appendChild(selectInput);
   blockSort.appendChild(textTools);
   blockSort.appendChild(ListSort);
 
@@ -259,7 +247,6 @@ window.onload = async () => {
   createContainer.appendChild(blockDate);
   createContainer.appendChild(blockComplaints);
   createContainer.appendChild(addButton);
-
   render();
 };
 
@@ -356,18 +343,6 @@ const addEntries = async (
   complaints = "";
   inputComplaints.value = "";
   render();
-};
-
-const inputValue = async (a) => {
-  console.log("fildSort.value", "khhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-
-  const valueEvent = (event) => {
-    a.value = event.target.value;
-    console.log("fildSort.value", a.value);
-
-    // if (a.value.trim() === "") a.value = a.placeholder;
-  };
-  return valueEvent;
 };
 
 const deleteFun = async (id) => {
@@ -550,6 +525,7 @@ const saveEditFun = async (
       element.value = element.placeholder;
     }
   });
+
   const resp = await fetch("http://localhost:8080/api/entries/update", {
     method: "PATCH",
     headers: {
@@ -572,39 +548,44 @@ const saveEditFun = async (
   render();
 };
 
-const sortFun = async (a) => {
-  inputValue(a);
+const inputValue = (a) => {
+  const valueEvent = (event) => {
+    a.value = event.target.value;
+  };
+  return valueEvent;
+};
 
-  let filtrConst = "id";
-  let directionConst = false;
+const sortFun = (a) => {
+  const valueEvent = async (event) => {
+    a.value = event.target.value;
 
-  if (a.value === "Имя") filtrConst = "nameUser";
-  if (a.value === "Врач") filtrConst = "nameDoctor";
-  if (a.value === "Дата") filtrConst = "date";
-  if (a.value === "None" || "") filtrConst = "id";
+    if (a.name === "selectInput") {
+      if (a.value === "Имя") sortObj.filtrSort = "nameUser";
+      if (a.value === "Врач") sortObj.filtrSort = "nameDoctor";
+      if (a.value === "Дата") sortObj.filtrSort = "date";
+      if (a.value === "None" || "") sortObj.filtrSort = "id";
+    } else {
+      a.value !== "По возрастанию"
+        ? (sortObj.direction = false)
+        : (sortObj.direction = "ASC");
+    }
 
-  if (a.value === "None" || "") a = "DESC";
-  a.value !== "По возрастанию"
-    ? (directionConst = false)
-    : (directionConst = "ASC");
+    const resp = await fetch("http://localhost:8080/api/entries/sort", {
+      method: "POST",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+        "Content-Type": "application/json;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        direction: sortObj.direction,
+        filter: sortObj.filtrSort,
+      }),
+    });
+    const result = await resp.json();
+    listEntrie = result;
 
-  console.log(filtrConst, directionConst);
-
-  const resp = await fetch("http://localhost:8080/api/entries/sort", {
-    method: "POST",
-    headers: {
-      Authorization: localStorage.getItem("token"),
-      "Content-Type": "application/json;charset=utf-8",
-      "Access-Control-Allow-Origin": "*",
-    },
-    body: JSON.stringify({
-      direction: directionConst,
-      filter: filtrConst,
-    }),
-  });
-
-  const result = await resp.json();
-  listEntrie = result;
-
-  render();
+    render();
+  };
+  return valueEvent;
 };
