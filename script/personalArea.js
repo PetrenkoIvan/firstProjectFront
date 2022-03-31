@@ -1,4 +1,6 @@
 let listEntrie = [];
+if (!localStorage.getItem("token") || !localStorage.getItem("token"))
+  window.location.href = "loginPage.html";
 
 let sortObj = {
   filtrSort: "id",
@@ -6,6 +8,7 @@ let sortObj = {
 };
 
 const exitFun = () => {
+  localStorage.clear();
   window.location.href = "loginPage.html";
 };
 
@@ -182,6 +185,7 @@ window.onload = async () => {
   const filtrWith = document.createElement("input");
   filtrWith.id = "Field";
   filtrWith.type = "date";
+  filtrWith.addEventListener("change", inputValue(filtrWith));
 
   const nameToolsFiltrTo = document.createElement("p");
   nameToolsFiltrTo.id = "nameTools";
@@ -190,7 +194,8 @@ window.onload = async () => {
   const filtrTo = document.createElement("input");
   filtrTo.id = "Field";
   filtrTo.type = "date";
-  filtrTo.value = moment().format("YYYY-MM-DD");
+  filtrTo.value = "";
+  filtrTo.addEventListener("change", inputValue(filtrTo));
 
   const blockToolsFiltr = document.createElement("div");
   blockToolsFiltr.id = "blockTools";
@@ -201,10 +206,24 @@ window.onload = async () => {
   const buttonFiltr = document.createElement("button");
   buttonFiltr.id = "buttonFiltr";
   buttonFiltr.textContent = "Фильтровать";
+  buttonFiltr.onclick = () => {
+    filretFun(filtrWith, filtrTo);
+  };
+
+  const buttoncleanFiltr = document.createElement("button");
+  buttoncleanFiltr.id = "buttoncleanFiltr";
+  buttoncleanFiltr.onclick = () => {
+    cleanFilretFun(filtrWith, filtrTo);
+  };
+
+  const imageClean = document.createElement("img");
+  imageClean.src = "/img/clean.svg";
+  buttoncleanFiltr.appendChild(imageClean);
 
   toolsFiltr.appendChild(blockToolsFiltr);
   toolsFiltr.appendChild(blockToolsFiltrSecond);
   toolsFiltr.appendChild(buttonFiltr);
+  toolsFiltr.appendChild(buttoncleanFiltr);
   blockToolsFiltr.appendChild(nameToolsFiltrWith);
   blockToolsFiltr.appendChild(filtrWith);
   blockToolsFiltrSecond.appendChild(nameToolsFiltrTo);
@@ -588,4 +607,55 @@ const sortFun = (a) => {
     render();
   };
   return valueEvent;
+};
+
+const filretFun = async (a, b) => {
+  valueEvent = (event) => {
+    a.value = event.target.value;
+    b.value = event.target.value;
+  };
+
+  let urlFetch = "http://localhost:8080/api/entries/getAllEntries";
+  let objFetch = {
+    method: "GET",
+    headers: {
+      Authorization: localStorage.getItem("token"),
+      "Content-Type": "application/json;charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+    },
+  };
+
+  if (a.value !== "" || b.value !== "") {
+    objFetch.method = "POST";
+    urlFetch = "http://localhost:8080/api/entries/filter";
+    objFetch.body = JSON.stringify({ dateStart: a.value, dateEnd: b.value });
+  }
+
+  const resp = await fetch(urlFetch, objFetch);
+  const result = await resp.json();
+  listEntrie = result;
+
+  render();
+};
+
+const cleanFilretFun = async (a, b) => {
+  valueEvent = (event) => {
+    a.value = event.target.value;
+    b.value = event.target.value;
+  };
+  a.value = "";
+  b.value = "";
+  const resp = await fetch("http://localhost:8080/api/entries/getAllEntries", {
+    method: "GET",
+    headers: {
+      Authorization: localStorage.getItem("token"),
+      "Content-Type": "application/json;charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+
+  const result = await resp.json();
+  listEntrie = result;
+
+  render();
 };
