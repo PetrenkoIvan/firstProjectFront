@@ -140,19 +140,26 @@ window.onload = async () => {
 
   const buttonOpenSort = document.createElement("button");
   buttonOpenSort.id = "openButton";
-  buttonOpenSort.textContent = "Сортировка";
-  panelTools.appendChild(buttonOpenSort);
+  buttonOpenSort.textContent = "Добавить сортировку:";
   buttonOpenSort.onclick = () => {
     openFun(toolsSorting);
   };
 
+  const imageOpenSort = document.createElement("img");
+  imageOpenSort.src = "/img/Open.svg";
+  buttonOpenSort.appendChild(imageOpenSort);
+
   const buttonOpenFilter = document.createElement("button");
   buttonOpenFilter.id = "openButton";
-  buttonOpenFilter.textContent = "Фильтрация";
+  buttonOpenFilter.textContent = "Добавить фильтр по дате:";
   panelTools.appendChild(buttonOpenFilter);
   buttonOpenFilter.onclick = () => {
     openFun(toolsFiltr);
   };
+
+  const imageOpenFiltr = document.createElement("img");
+  imageOpenFiltr.src = "/img/Open.svg";
+  buttonOpenFilter.appendChild(imageOpenFiltr);
 
   const nameTools = document.createElement("p");
   nameTools.id = "nameTools";
@@ -254,7 +261,9 @@ window.onload = async () => {
   blockSort.appendChild(textTools);
   blockSort.appendChild(ListSort);
 
+  panelTools.appendChild(buttonOpenSort);
   panelTools.appendChild(toolsSorting);
+  panelTools.appendChild(buttonOpenFilter);
   panelTools.appendChild(toolsFiltr);
 
   mainContainer.appendChild(panelTools);
@@ -272,7 +281,7 @@ divEmpty.id = 'divEmpty'
   columnArea.appendChild(doctorNameColumn);
   columnArea.appendChild(dateColumn);
   columnArea.appendChild(complaintsColumn);
-  // columnArea.appendChild(divEmpty);
+  columnArea.appendChild(divEmpty);
 
 
   blockName.appendChild(nameField);
