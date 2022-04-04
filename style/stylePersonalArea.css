@@ -489,8 +489,6 @@ header button {
     flex-direction: column;
   }
 
-
-
   #openButton {
     font-size: 15px;
   }
@@ -526,7 +524,7 @@ header button {
     align-items: center;
   }
 
-  #listEntries  p{
+  #listEntries p {
     font-size: 15px;
   }
 
@@ -570,7 +568,7 @@ header button {
     margin-left: 10px;
   }
 
-  #openButton  {
+  #openButton {
     font-size: 10px;
   }
 

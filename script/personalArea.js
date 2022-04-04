@@ -141,9 +141,7 @@ window.onload = async () => {
   const buttonOpenSort = document.createElement("button");
   buttonOpenSort.id = "openButton";
   buttonOpenSort.textContent = "Добавить сортировку:";
-  buttonOpenSort.onclick = () => {
-    openFun(toolsSorting);
-  };
+  buttonOpenSort.onclick = () => openFun(toolsSorting);
 
   const imageOpenSort = document.createElement("img");
   imageOpenSort.src = "/img/Open.svg";
@@ -153,9 +151,7 @@ window.onload = async () => {
   buttonOpenFilter.id = "openButton";
   buttonOpenFilter.textContent = "Добавить фильтр по дате:";
   panelTools.appendChild(buttonOpenFilter);
-  buttonOpenFilter.onclick = () => {
-    openFun(toolsFiltr);
-  };
+  buttonOpenFilter.onclick = () => openFun(toolsFiltr);
 
   const imageOpenFiltr = document.createElement("img");
   imageOpenFiltr.src = "/img/Open.svg";
@@ -273,17 +269,14 @@ window.onload = async () => {
   contentList.id = "contentList";
   listEntries.appendChild(contentList);
 
-
-const divEmpty = document.createElement('div')
-divEmpty.id = 'divEmpty'
+  const divEmpty = document.createElement("div");
+  divEmpty.id = "divEmpty"; 
 
   columnArea.appendChild(nameUserColumn);
   columnArea.appendChild(doctorNameColumn);
   columnArea.appendChild(dateColumn);
   columnArea.appendChild(complaintsColumn);
   columnArea.appendChild(divEmpty);
-
-
   blockName.appendChild(nameField);
   blockNameDoctor.appendChild(doctorField);
   blockDate.appendChild(dateField);
@@ -293,12 +286,12 @@ divEmpty.id = 'divEmpty'
   blockNameDoctor.appendChild(inputDoctor);
   blockDate.appendChild(inputDate);
   blockComplaints.appendChild(inputComplaints);
-
   createContainer.appendChild(blockName);
   createContainer.appendChild(blockNameDoctor);
   createContainer.appendChild(blockDate);
   createContainer.appendChild(blockComplaints);
   createContainer.appendChild(addButton);
+  
   render();
 };
 
