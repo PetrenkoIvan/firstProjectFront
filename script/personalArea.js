@@ -134,18 +134,19 @@ window.onload = async () => {
 
   const toolsFiltr = document.createElement("div");
   toolsFiltr.id = "toolsContainer";
+  toolsFiltr.style.display = "none";
 
   const toolsSorting = document.createElement("div");
   toolsSorting.id = "toolsContainer";
 
-  const buttonOpenSort = document.createElement("button");
-  buttonOpenSort.id = "openButton";
-  buttonOpenSort.textContent = "Добавить сортировку:";
-  buttonOpenSort.onclick = () => openFun(toolsSorting);
+  // const buttonOpenSort = document.createElement("button");
+  // buttonOpenSort.id = "openButton";
+  // buttonOpenSort.textContent = "Добавить сортировку:";
+  // buttonOpenSort.onclick = () => openFun(toolsSorting);
 
-  const imageOpenSort = document.createElement("img");
-  imageOpenSort.src = "/img/Open.svg";
-  buttonOpenSort.appendChild(imageOpenSort);
+  // const imageOpenSort = document.createElement("img");
+  // imageOpenSort.src = "/img/Open.svg";
+  // buttonOpenSort.appendChild(imageOpenSort);
 
   const buttonOpenFilter = document.createElement("button");
   buttonOpenFilter.id = "openButton";
@@ -199,6 +200,9 @@ window.onload = async () => {
 
   const blockSort = document.createElement("div");
   blockSort.id = "blockTools";
+  blockSort.name = "blockSort";
+  blockSort.style.display = "none";
+
   const nameToolsFiltrWith = document.createElement("p");
   nameToolsFiltrWith.id = "nameTools";
   nameToolsFiltrWith.textContent = "С:";
@@ -257,7 +261,7 @@ window.onload = async () => {
   blockSort.appendChild(textTools);
   blockSort.appendChild(ListSort);
 
-  panelTools.appendChild(buttonOpenSort);
+  // panelTools.appendChild(buttonOpenSort);
   panelTools.appendChild(toolsSorting);
   panelTools.appendChild(buttonOpenFilter);
   panelTools.appendChild(toolsFiltr);
@@ -270,7 +274,7 @@ window.onload = async () => {
   listEntries.appendChild(contentList);
 
   const divEmpty = document.createElement("div");
-  divEmpty.id = "divEmpty"; 
+  divEmpty.id = "divEmpty";
 
   columnArea.appendChild(nameUserColumn);
   columnArea.appendChild(doctorNameColumn);
@@ -291,7 +295,6 @@ window.onload = async () => {
   createContainer.appendChild(blockDate);
   createContainer.appendChild(blockComplaints);
   createContainer.appendChild(addButton);
-  
   render();
 };
 
@@ -603,13 +606,24 @@ const inputValue = (a) => {
 const sortFun = (a) => {
   const valueEvent = async (event) => {
     a.value = event.target.value;
-
     if (a.name === "selectInput") {
+      const parent = a.parentNode;
+      const parentMain = parent.parentNode;
       if (a.value === "Имя") sortObj.filtrSort = "nameUser";
       if (a.value === "Врач") sortObj.filtrSort = "nameDoctor";
       if (a.value === "Дата") sortObj.filtrSort = "date";
-      if (a.value === "None" || "") sortObj.filtrSort = "id";
+
+      if (a.value !== "None" || "") {
+        parent.nextSibling.style.display = "flex";
+        parentMain.style.flexDirection = "row";
+      } else {
+        sortObj.filtrSort = "id";
+        a.value = "";
+        parent.nextSibling.style.display = "none";
+        sortObj.direction = false;
+      }
     } else {
+      if (sortObj.filtrSort !== "id") a.parentNode.style.display = "flex";
       a.value !== "По возрастанию"
         ? (sortObj.direction = false)
         : (sortObj.direction = "ASC");
@@ -665,10 +679,15 @@ const filretFun = async (a, b) => {
 };
 
 const cleanFilretFun = async (a, b) => {
+  const button = document.getElementById("buttoncleanFiltr");
+  const parent = button.parentNode;
+  const mainParent = parent.parentNode;
+
   valueEvent = (event) => {
     a.value = event.target.value;
     b.value = event.target.value;
   };
+
   a.value = "";
   b.value = "";
   const resp = await fetch("http://localhost:8080/api/entries/getAllEntries", {
@@ -682,12 +701,24 @@ const cleanFilretFun = async (a, b) => {
 
   const result = await resp.json();
   listEntrie = result;
+  mainParent.childNodes[1].style.display = "flex";
+  mainParent.lastChild.style.display = "none";
+  mainParent.style.flexDirection === "column"
+    ? (mainParent.style.flexDirection = "row")
+    : (mainParent.style.flexDirection = "column");
 
   render();
 };
 
 const openFun = (a) => {
-  a.style.display === "flex"
-    ? (a.style.display = "none")
-    : (a.style.display = "flex");
+  const button = document.getElementById("openButton");
+  parent = button.parentNode;
+
+  a.style.display === "none"
+    ? ((a.style.display = "flex"), (button.style.display = "none"))
+    : (a.style.display = "none");
+
+  parent.style.flexDirection === "column"
+    ? (parent.style.flexDirection = "row")
+    : (parent.style.flexDirection = "column");
 };

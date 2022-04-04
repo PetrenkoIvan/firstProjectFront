@@ -191,6 +191,7 @@ header button {
 }
 
 #toolsContainer {
+  display: flex;
   padding-top: 20px;
   align-items: center;
   font-family: Roboto;
@@ -214,13 +215,6 @@ header button {
 
 #blockTools p {
   margin-right: 15px;
-}
-
-#toolsContainer {
-  display: none;
-  flex-direction: row;
-  justify-content: end;
-  margin-bottom: 20px;
 }
 
 #buttonFiltr {
@@ -397,16 +391,14 @@ header button {
 
 #panelTools {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding-right: 20px;
+  padding-right: 40px;
   padding-left: 20px;
   padding-top: 20px;
 }
 
 #openButton {
   display: flex;
-  margin-left: auto;
   margin-right: 0;
   margin-top: 20px;
   justify-content: center;
@@ -466,7 +458,6 @@ header button {
     flex-direction: column;
     justify-content: end;
     margin: 0;
-    margin-bottom: 20px;
   }
 
   #divEmpty {
