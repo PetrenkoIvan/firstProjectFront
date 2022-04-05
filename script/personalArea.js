@@ -1,5 +1,6 @@
 let listEntrie = [];
 let flag = 0;
+const sizeWindow = window.screen.width;
 
 if (!localStorage.getItem("token") || !localStorage.getItem("token"))
   window.location.href = "loginPage.html";
@@ -37,8 +38,9 @@ window.onload = async () => {
     },
   });
   const result = await resp.json();
-
   listEntrie = result;
+
+  if (result.error) window.location.href = "loginPage.html";
 
   const blockName = document.createElement("div");
   blockName.id = "blockField";
@@ -138,15 +140,19 @@ window.onload = async () => {
 
   const toolsSorting = document.createElement("div");
   toolsSorting.id = "toolsContainer";
+  // if (sizeWindow < 580) {
+  //   toolsSorting.style.display = "none";
+  // } else toolsSorting.style.display = "flex";
 
-  // const buttonOpenSort = document.createElement("button");
-  // buttonOpenSort.id = "openButton";
-  // buttonOpenSort.textContent = "Добавить сортировку:";
-  // buttonOpenSort.onclick = () => openFun(toolsSorting);
+  const buttonOpenSort = document.createElement("button");
+  buttonOpenSort.id = "buttonOpenSort";
+  buttonOpenSort.textContent = "Добавить сортировку:";
+  buttonOpenSort.onclick = () => openFunSort(toolsSorting);
+  panelTools.appendChild(buttonOpenSort);
 
-  // const imageOpenSort = document.createElement("img");
-  // imageOpenSort.src = "/img/Open.svg";
-  // buttonOpenSort.appendChild(imageOpenSort);
+  const imageOpenSort = document.createElement("img");
+  imageOpenSort.src = "/img/Open.svg";
+  buttonOpenSort.appendChild(imageOpenSort);
 
   const buttonOpenFilter = document.createElement("button");
   buttonOpenFilter.id = "openButton";
@@ -261,7 +267,7 @@ window.onload = async () => {
   blockSort.appendChild(textTools);
   blockSort.appendChild(ListSort);
 
-  // panelTools.appendChild(buttonOpenSort);
+  panelTools.appendChild(buttonOpenSort);
   panelTools.appendChild(toolsSorting);
   panelTools.appendChild(buttonOpenFilter);
   panelTools.appendChild(toolsFiltr);
@@ -615,7 +621,6 @@ const sortFun = (a) => {
 
       if (a.value !== "None" || "") {
         parent.nextSibling.style.display = "flex";
-        parentMain.style.flexDirection = "row";
       } else {
         sortObj.filtrSort = "id";
         a.value = "";
@@ -682,7 +687,6 @@ const cleanFilretFun = async (a, b) => {
   const button = document.getElementById("buttoncleanFiltr");
   const parent = button.parentNode;
   const mainParent = parent.parentNode;
-
   valueEvent = (event) => {
     a.value = event.target.value;
     b.value = event.target.value;
@@ -701,11 +705,8 @@ const cleanFilretFun = async (a, b) => {
 
   const result = await resp.json();
   listEntrie = result;
-  mainParent.childNodes[1].style.display = "flex";
+  mainParent.childNodes[2].style.display = "flex";
   mainParent.lastChild.style.display = "none";
-  mainParent.style.flexDirection === "column"
-    ? (mainParent.style.flexDirection = "row")
-    : (mainParent.style.flexDirection = "column");
 
   render();
 };
@@ -717,8 +718,13 @@ const openFun = (a) => {
   a.style.display === "none"
     ? ((a.style.display = "flex"), (button.style.display = "none"))
     : (a.style.display = "none");
+};
 
-  parent.style.flexDirection === "column"
-    ? (parent.style.flexDirection = "row")
-    : (parent.style.flexDirection = "column");
+const openFunSort = (a) => {
+  const button = document.getElementById("buttonOpenSort");
+  parent = button.parentNode;
+
+  a.style.display === "block"
+    ? (a.style.display = "none")
+    : (a.style.display = "block");
 };
