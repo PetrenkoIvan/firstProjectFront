@@ -497,12 +497,6 @@ header button {
   }
 }
 
-@media (min-width: 580px) {
-  .blockSort {
-    display: flex !important;
-  }
-}
-
 @media (max-width: 580px) {
   header img {
     margin-right: 20px;
@@ -510,10 +504,6 @@ header button {
 
   #buttonOpenSort {
     display: flex;
-  }
-
-  #toolsContainer {
-    display: none;
   }
 }
 

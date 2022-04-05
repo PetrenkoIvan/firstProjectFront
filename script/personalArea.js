@@ -142,7 +142,7 @@ window.onload = async () => {
   const buttonOpenSort = document.createElement("button");
   buttonOpenSort.id = "buttonOpenSort";
   buttonOpenSort.textContent = "Добавить сортировку:";
-  buttonOpenSort.onclick = () => openFunSort(toolsSorting);
+  buttonOpenSort.onclick = () => openFunSort(blockSort);
   panelTools.appendChild(buttonOpenSort);
 
   const imageOpenSort = document.createElement("img");
@@ -299,6 +299,13 @@ window.onload = async () => {
   createContainer.appendChild(addButton);
   render();
 };
+
+window.addEventListener('resize', winsize=() => {
+    const block = document.getElementsByClassName('blockSort')
+    if (window.screen.width < 580) {
+    block.blockTools.style.display = 'none'
+  } else block.blockTools.style.display = 'flex';
+})
 
 const render = () => {
   while (contentList.firstChild) {
@@ -717,10 +724,13 @@ const openFun = (a) => {
 };
 
 const openFunSort = (a) => {
+
   const button = document.getElementById("buttonOpenSort");
   parent = button.parentNode;
 
-  a.style.display === "block"
+    a.style.display === "flex"
     ? (a.style.display = "none")
-    : (a.style.display = "block");
+    : (a.style.display = "flex");
+
+  
 };
