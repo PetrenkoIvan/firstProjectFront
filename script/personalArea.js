@@ -1,4 +1,5 @@
-let listEntrie = [];
+let listEntrie = {};
+
 if (!localStorage.getItem("token") || !localStorage.getItem("token"))
   window.location.href = "loginPage.html";
 
@@ -35,8 +36,9 @@ window.onload = async () => {
     },
   });
   const result = await resp.json();
-
   listEntrie = result;
+
+  if (result.error) window.location.href = "loginPage.html";
 
   const blockName = document.createElement("div");
   blockName.id = "blockField";
@@ -132,9 +134,30 @@ window.onload = async () => {
 
   const toolsFiltr = document.createElement("div");
   toolsFiltr.id = "toolsContainer";
+  toolsFiltr.style.display = "none";
 
   const toolsSorting = document.createElement("div");
   toolsSorting.id = "toolsContainer";
+
+  const buttonOpenSort = document.createElement("button");
+  buttonOpenSort.id = "buttonOpenSort";
+  buttonOpenSort.textContent = "Добавить сортировку:";
+  buttonOpenSort.onclick = () => openFunSort(toolsSorting);
+  panelTools.appendChild(buttonOpenSort);
+
+  const imageOpenSort = document.createElement("img");
+  imageOpenSort.src = "/img/Open.svg";
+  buttonOpenSort.appendChild(imageOpenSort);
+
+  const buttonOpenFilter = document.createElement("button");
+  buttonOpenFilter.id = "openButton";
+  buttonOpenFilter.textContent = "Добавить фильтр по дате:";
+  panelTools.appendChild(buttonOpenFilter);
+  buttonOpenFilter.onclick = () => openFun(toolsFiltr);
+
+  const imageOpenFiltr = document.createElement("img");
+  imageOpenFiltr.src = "/img/Open.svg";
+  buttonOpenFilter.appendChild(imageOpenFiltr);
 
   const nameTools = document.createElement("p");
   nameTools.id = "nameTools";
@@ -175,9 +198,13 @@ window.onload = async () => {
 
   const blockTools = document.createElement("div");
   blockTools.id = "blockTools";
+  blockTools.className = "blockSort";
 
   const blockSort = document.createElement("div");
   blockSort.id = "blockTools";
+  blockSort.name = "blockSort";
+  blockSort.style.display = "none";
+
   const nameToolsFiltrWith = document.createElement("p");
   nameToolsFiltrWith.id = "nameTools";
   nameToolsFiltrWith.textContent = "С:";
@@ -236,7 +263,9 @@ window.onload = async () => {
   blockSort.appendChild(textTools);
   blockSort.appendChild(ListSort);
 
+  panelTools.appendChild(buttonOpenSort);
   panelTools.appendChild(toolsSorting);
+  panelTools.appendChild(buttonOpenFilter);
   panelTools.appendChild(toolsFiltr);
 
   mainContainer.appendChild(panelTools);
@@ -246,11 +275,14 @@ window.onload = async () => {
   contentList.id = "contentList";
   listEntries.appendChild(contentList);
 
+  const divEmpty = document.createElement("div");
+  divEmpty.id = "divEmpty";
+
   columnArea.appendChild(nameUserColumn);
   columnArea.appendChild(doctorNameColumn);
   columnArea.appendChild(dateColumn);
   columnArea.appendChild(complaintsColumn);
-
+  columnArea.appendChild(divEmpty);
   blockName.appendChild(nameField);
   blockNameDoctor.appendChild(doctorField);
   blockDate.appendChild(dateField);
@@ -260,7 +292,6 @@ window.onload = async () => {
   blockNameDoctor.appendChild(inputDoctor);
   blockDate.appendChild(inputDate);
   blockComplaints.appendChild(inputComplaints);
-
   createContainer.appendChild(blockName);
   createContainer.appendChild(blockNameDoctor);
   createContainer.appendChild(blockDate);
@@ -577,13 +608,23 @@ const inputValue = (a) => {
 const sortFun = (a) => {
   const valueEvent = async (event) => {
     a.value = event.target.value;
-
     if (a.name === "selectInput") {
+      const parent = a.parentNode;
+      const parentMain = parent.parentNode;
       if (a.value === "Имя") sortObj.filtrSort = "nameUser";
       if (a.value === "Врач") sortObj.filtrSort = "nameDoctor";
       if (a.value === "Дата") sortObj.filtrSort = "date";
-      if (a.value === "None" || "") sortObj.filtrSort = "id";
+
+      if (a.value !== "None" || "") {
+        parent.nextSibling.style.display = "flex";
+      } else {
+        sortObj.filtrSort = "id";
+        a.value = "";
+        parent.nextSibling.style.display = "none";
+        sortObj.direction = false;
+      }
     } else {
+      if (sortObj.filtrSort !== "id") a.parentNode.style.display = "flex";
       a.value !== "По возрастанию"
         ? (sortObj.direction = false)
         : (sortObj.direction = "ASC");
@@ -639,10 +680,14 @@ const filretFun = async (a, b) => {
 };
 
 const cleanFilretFun = async (a, b) => {
+  const button = document.getElementById("buttoncleanFiltr");
+  const parent = button.parentNode;
+  const mainParent = parent.parentNode;
   valueEvent = (event) => {
     a.value = event.target.value;
     b.value = event.target.value;
   };
+
   a.value = "";
   b.value = "";
   const resp = await fetch("http://localhost:8080/api/entries/getAllEntries", {
@@ -656,6 +701,26 @@ const cleanFilretFun = async (a, b) => {
 
   const result = await resp.json();
   listEntrie = result;
+  mainParent.childNodes[2].style.display = "flex";
+  mainParent.lastChild.style.display = "none";
 
   render();
+};
+
+const openFun = (a) => {
+  const button = document.getElementById("openButton");
+  parent = button.parentNode;
+
+  a.style.display === "none"
+    ? ((a.style.display = "flex"), (button.style.display = "none"))
+    : (a.style.display = "none");
+};
+
+const openFunSort = (a) => {
+  const button = document.getElementById("buttonOpenSort");
+  parent = button.parentNode;
+
+  a.style.display === "block"
+    ? (a.style.display = "none")
+    : (a.style.display = "block");
 };

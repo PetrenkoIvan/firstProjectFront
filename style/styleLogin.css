@@ -162,7 +162,7 @@ header p {
   }
 
   .imgContainer {
-    width: 40%;
+    display: none;
   }
 
   #loginArea {
@@ -199,7 +199,7 @@ header p {
   }
 
   .imgContainer {
-    width: 80%;
+    width: 60%;
   }
 
   #loginArea {
