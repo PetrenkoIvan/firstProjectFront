@@ -498,7 +498,7 @@ header button {
 }
 
 @media (min-width: 580px) {
-  #toolsContainer {
+  .blockSort {
     display: flex !important;
   }
 }

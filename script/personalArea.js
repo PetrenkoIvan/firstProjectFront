@@ -1,6 +1,4 @@
-let listEntrie = [];
-let flag = 0;
-const sizeWindow = window.screen.width;
+let listEntrie = {};
 
 if (!localStorage.getItem("token") || !localStorage.getItem("token"))
   window.location.href = "loginPage.html";
@@ -140,9 +138,6 @@ window.onload = async () => {
 
   const toolsSorting = document.createElement("div");
   toolsSorting.id = "toolsContainer";
-  // if (sizeWindow < 580) {
-  //   toolsSorting.style.display = "none";
-  // } else toolsSorting.style.display = "flex";
 
   const buttonOpenSort = document.createElement("button");
   buttonOpenSort.id = "buttonOpenSort";
@@ -203,6 +198,7 @@ window.onload = async () => {
 
   const blockTools = document.createElement("div");
   blockTools.id = "blockTools";
+  blockTools.className = "blockSort";
 
   const blockSort = document.createElement("div");
   blockSort.id = "blockTools";
