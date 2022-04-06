@@ -1,4 +1,6 @@
 let listEntrie = {};
+const checkPass = localStorage.getItem("token");
+const checkLog = localStorage.getItem("login");
 
 if (!localStorage.getItem("token") || !localStorage.getItem("token"))
   window.location.href = "loginPage.html";
@@ -19,9 +21,6 @@ window.onload = async () => {
   createContainer.id = "createContainer";
 
   mainContainer.appendChild(createContainer);
-
-  const checkPass = localStorage.getItem("token");
-  const checkLog = localStorage.getItem("login");
 
   if (!checkLog || !checkPass) {
     window.location.href = "loginPage.html";
@@ -73,20 +72,18 @@ window.onload = async () => {
   inputName.type = "text";
   inputName.addEventListener("change", inputValue(inputName));
 
-  const listDoctors = document.createElement("datalist");
-  listDoctors.id = "doctors";
-  const doctorList = ["Петров Петр Петрович", "Иванов Иван Иванович"];
-  for (let i = 0; i <= doctorList.length; i++) {
-    const a = new Option("", doctorList[i]);
-    listDoctors.appendChild(a);
-  }
-  const inputDoctor = document.createElement("input");
-  inputDoctor.type = "text";
-  inputDoctor.id = "Field";
+  const inputDoctor = document.createElement("SELECT");
+  inputDoctor.setAttribute("id", "Field");
   inputDoctor.name = "inputDoctor";
-  inputDoctor.addEventListener("change", inputValue(inputDoctor));
-  inputDoctor.appendChild(listDoctors);
-  inputDoctor.setAttribute("list", "doctors");
+
+  const doctorList = ["None", "Петров Петр Петрович", "Иванов Иван Иванович"];
+  for (let i = 0; i < doctorList.length; i++) {
+    const option = document.createElement("option");
+    option.setAttribute("value", doctorList[i]);
+    option.textContent = doctorList[i];
+
+    inputDoctor.appendChild(option);
+  }
 
   const inputDate = document.createElement("input");
   inputDate.id = "Field";
@@ -142,7 +139,7 @@ window.onload = async () => {
   const buttonOpenSort = document.createElement("button");
   buttonOpenSort.id = "buttonOpenSort";
   buttonOpenSort.textContent = "Добавить сортировку:";
-  buttonOpenSort.onclick = () => openFunSort(toolsSorting);
+  buttonOpenSort.onclick = () => openFunSort(blockSort);
   panelTools.appendChild(buttonOpenSort);
 
   const imageOpenSort = document.createElement("img");
@@ -300,6 +297,16 @@ window.onload = async () => {
   render();
 };
 
+window.addEventListener(
+  "resize",
+  (winsize = () => {
+    const block = document.getElementsByClassName("blockSort");
+    if (window.screen.width < 580) {
+      block.blockTools.style.display = "none";
+    } else block.blockTools.style.display = "flex";
+  })
+);
+
 const render = () => {
   while (contentList.firstChild) {
     contentList.removeChild(contentList.lastChild);
@@ -359,31 +366,42 @@ const addEntries = async (
   inputDate,
   inputComplaints
 ) => {
+  const checkPass = localStorage.getItem("token");
+  const checkLog = localStorage.getItem("login");
+
+  if (!checkLog || !checkPass) {
+    window.location.href = "loginPage.html";
+  }
+
   let nameClient = inputName.value;
   let nameDoctor = inputDoctor.value;
   let date = inputDate.value;
   let complaints = inputComplaints.value;
 
-  if (nameClient && nameDoctor && date && complaints) {
-    const resp = await fetch("http://localhost:8080/api/entries/", {
-      method: "POST",
-      headers: {
-        Authorization: localStorage.getItem("token"),
-        "Content-Type": "application/json;charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        firstName: nameClient,
-        nameDoctor,
-        date,
-        complaints,
-      }),
-    });
+  if (nameDoctor === "None") {
+    alert("Выберите врача");
+  } else {
+    if (nameClient && nameDoctor && date && complaints) {
+      const resp = await fetch("http://localhost:8080/api/entries/", {
+        method: "POST",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+          "Content-Type": "application/json;charset=utf-8",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          firstName: nameClient,
+          nameDoctor,
+          date,
+          complaints,
+        }),
+      });
 
-    const result = await resp.json();
+      const result = await resp.json();
 
-    listEntrie = result;
-  } else alert("Заполните все поля");
+      listEntrie = result;
+    } else alert("Заполните все поля");
+  }
 
   inputName.value = "";
   nameDoctor = "";
@@ -396,6 +414,13 @@ const addEntries = async (
 };
 
 const deleteFun = async (id) => {
+  const checkPass = localStorage.getItem("token");
+  const checkLog = localStorage.getItem("login");
+
+  if (!checkLog || !checkPass) {
+    window.location.href = "loginPage.html";
+  }
+
   const modal = document.createElement("div");
   modal.id = "modal";
   const modalDelete = document.createElement("div");
@@ -459,6 +484,13 @@ const deleteFun = async (id) => {
 };
 
 const editFun = (index) => {
+  const checkPass = localStorage.getItem("token");
+  const checkLog = localStorage.getItem("login");
+
+  if (!checkLog || !checkPass) {
+    window.location.href = "loginPage.html";
+  }
+
   const { nameUser, nameDoctor, date, complaints, id } = listEntrie[index];
   const modal = document.createElement("div");
   modal.id = "modal";
@@ -569,6 +601,13 @@ const saveEditFun = async (
   inputcomplaints,
   id
 ) => {
+  const checkPass = localStorage.getItem("token");
+  const checkLog = localStorage.getItem("login");
+
+  if (!checkLog || !checkPass) {
+    window.location.href = "loginPage.html";
+  }
+
   const editField = [inputUserName, inputDoctorName, date, inputcomplaints, id];
   editField.forEach((element) => {
     if (element.value == "") {
@@ -606,6 +645,13 @@ const inputValue = (a) => {
 };
 
 const sortFun = (a) => {
+  const checkPass = localStorage.getItem("token");
+  const checkLog = localStorage.getItem("login");
+
+  if (!checkLog || !checkPass) {
+    window.location.href = "loginPage.html";
+  }
+
   const valueEvent = async (event) => {
     a.value = event.target.value;
     if (a.name === "selectInput") {
@@ -651,6 +697,13 @@ const sortFun = (a) => {
 };
 
 const filretFun = async (a, b) => {
+  const checkPass = localStorage.getItem("token");
+  const checkLog = localStorage.getItem("login");
+
+  if (!checkLog || !checkPass) {
+    window.location.href = "loginPage.html";
+  }
+
   valueEvent = (event) => {
     a.value = event.target.value;
     b.value = event.target.value;
@@ -680,6 +733,13 @@ const filretFun = async (a, b) => {
 };
 
 const cleanFilretFun = async (a, b) => {
+  const checkPass = localStorage.getItem("token");
+  const checkLog = localStorage.getItem("login");
+
+  if (!checkLog || !checkPass) {
+    window.location.href = "loginPage.html";
+  }
+
   const button = document.getElementById("buttoncleanFiltr");
   const parent = button.parentNode;
   const mainParent = parent.parentNode;
@@ -708,6 +768,13 @@ const cleanFilretFun = async (a, b) => {
 };
 
 const openFun = (a) => {
+  const checkPass = localStorage.getItem("token");
+  const checkLog = localStorage.getItem("login");
+
+  if (!checkLog || !checkPass) {
+    window.location.href = "loginPage.html";
+  }
+
   const button = document.getElementById("openButton");
   parent = button.parentNode;
 
@@ -717,10 +784,17 @@ const openFun = (a) => {
 };
 
 const openFunSort = (a) => {
+  const checkPass = localStorage.getItem("token");
+  const checkLog = localStorage.getItem("login");
+
+  if (!checkLog || !checkPass) {
+    window.location.href = "loginPage.html";
+  }
+
   const button = document.getElementById("buttonOpenSort");
   parent = button.parentNode;
 
-  a.style.display === "block"
+  a.style.display === "flex"
     ? (a.style.display = "none")
-    : (a.style.display = "block");
+    : (a.style.display = "flex");
 };
