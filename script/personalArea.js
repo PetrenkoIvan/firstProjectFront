@@ -662,7 +662,7 @@ const sortFun = (a) => {
       if (a.value === "Врач") sortObj.filtrSort = "nameDoctor";
       if (a.value === "Дата") sortObj.filtrSort = "date";
 
-      if (a.value !== "None" || a.value) {
+      if (a.value !== "None" || !a.value) {
         parent.nextSibling.style.display = "flex";
       } else {
         sortObj.filtrSort = "id";
