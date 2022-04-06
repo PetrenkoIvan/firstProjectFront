@@ -141,6 +141,10 @@ header button {
   margin: 0;
   text-align: center;
   border-right: 2px solid black;
+  overflow: hidden;
+}
+
+#contentList p:hover {
   word-break: break-all;
 }
 
@@ -439,7 +443,7 @@ header button {
 }
 
 #openButton img {
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 @media (max-width: 1284px) {
@@ -520,6 +524,10 @@ header button {
     margin-top: 20px;
   }
 
+  #buttonOpenSort {
+    font-size: 15px;
+  }
+
   #columnArea p {
     font-size: 13px;
   }
@@ -582,7 +590,7 @@ header button {
   width: 7%;
 }
 
-@media (max-width: 320px) {
+@media (max-width: 360px) {
   header button {
     font-size: 15px;
     padding-left: 5px;
@@ -599,14 +607,6 @@ header button {
   #buttonOpenSort {
     font-size: 15px;
     padding: 0;
-  }
-
-  #openButton img {
-    width: 20px;
-  }
-
-  #buttonOpenSort img {
-    width: 20px;
   }
 
   header img {
