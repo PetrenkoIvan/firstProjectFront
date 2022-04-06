@@ -610,7 +610,8 @@ const saveEditFun = async (
 
   const editField = [inputUserName, inputDoctorName, date, inputcomplaints, id];
   editField.forEach((element) => {
-    if (element.value == "") {
+    console.log(element);
+    if (!element.value) {
       element.value = element.placeholder;
     }
   });
@@ -661,7 +662,7 @@ const sortFun = (a) => {
       if (a.value === "Врач") sortObj.filtrSort = "nameDoctor";
       if (a.value === "Дата") sortObj.filtrSort = "date";
 
-      if (a.value !== "None" || "") {
+      if (a.value !== "None" || a.value) {
         parent.nextSibling.style.display = "flex";
       } else {
         sortObj.filtrSort = "id";
@@ -719,7 +720,7 @@ const filretFun = async (a, b) => {
     },
   };
 
-  if (a.value !== "" || b.value !== "") {
+  if (a.value || b.value) {
     objFetch.method = "POST";
     urlFetch = "http://localhost:8080/api/entries/filter";
     objFetch.body = JSON.stringify({ dateStart: a.value, dateEnd: b.value });
