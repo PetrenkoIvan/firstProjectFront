@@ -610,7 +610,6 @@ const saveEditFun = async (
 
   const editField = [inputUserName, inputDoctorName, date, inputcomplaints, id];
   editField.forEach((element) => {
-    console.log(element);
     if (!element.value) {
       element.value = element.placeholder;
     }
