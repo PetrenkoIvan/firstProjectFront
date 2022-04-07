@@ -1,21 +1,27 @@
+import {
+  addEntries,
+  sortFun,
+  filretFun,
+  getEntries,
+  cleanFilretFun,
+  inputValue,
+} from "./controllers/entries_controllers.js";
+
+import { render } from "./render.js";
+
+import { openFunSort, openFun } from "./button_function/buttonFunction.js";
+
 let listEntrie = {};
+listEntrie = getEntries(listEntrie);
+
 const checkPass = localStorage.getItem("token");
 const checkLog = localStorage.getItem("login");
 
 if (!localStorage.getItem("token") || !localStorage.getItem("token"))
   window.location.href = "loginPage.html";
 
-let sortObj = {
-  filtrSort: "id",
-  direction: "ASC",
-};
-
-const exitFun = () => {
-  localStorage.clear();
-  window.location.href = "loginPage.html";
-};
-
 window.onload = async () => {
+  listEntrie = await getEntries();
   const mainContainer = document.getElementById("mainContainer");
   const createContainer = document.createElement("div");
   createContainer.id = "createContainer";
@@ -25,19 +31,6 @@ window.onload = async () => {
   if (!checkLog || !checkPass) {
     window.location.href = "loginPage.html";
   }
-
-  const resp = await fetch("http://localhost:8080/api/entries/getAllEntries", {
-    method: "GET",
-    headers: {
-      Authorization: localStorage.getItem("token"),
-      "Content-Type": "application/json;charset=utf-8",
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
-  const result = await resp.json();
-  listEntrie = result;
-
-  if (result.error) window.location.href = "loginPage.html";
 
   const blockName = document.createElement("div");
   blockName.id = "blockField";
@@ -99,7 +92,7 @@ window.onload = async () => {
   const addButton = document.createElement("button");
   addButton.textContent = "Добавить";
   addButton.onclick = () => {
-    addEntries(inputName, inputDoctor, inputDate, inputComplaints);
+    addEntries(inputName, inputDoctor, inputDate, inputComplaints, listEntries);
   };
 
   const listEntries = document.createElement("div");
@@ -139,7 +132,7 @@ window.onload = async () => {
   const buttonOpenSort = document.createElement("button");
   buttonOpenSort.id = "buttonOpenSort";
   buttonOpenSort.textContent = "Добавить сортировку:";
-  buttonOpenSort.onclick = () => openFunSort(blockSort);
+  buttonOpenSort.onclick = () => openFunSort(blockToolsSort);
   panelTools.appendChild(buttonOpenSort);
 
   const imageOpenSort = document.createElement("img");
@@ -193,13 +186,13 @@ window.onload = async () => {
   }
   ListSort.addEventListener("change", sortFun(ListSort));
 
-  const blockTools = document.createElement("div");
-  blockTools.id = "blockTools";
-  blockTools.className = "blockSort";
+  const blockToolsSort = document.createElement("div");
+  blockToolsSort.id = "blockTools";
+  blockToolsSort.className = "blockSort";
 
   const blockSort = document.createElement("div");
   blockSort.id = "blockTools";
-  blockSort.name = "blockSort";
+  // blockSort.className = "blockSort";
   blockSort.style.display = "none";
 
   const nameToolsFiltrWith = document.createElement("p");
@@ -253,10 +246,10 @@ window.onload = async () => {
   blockToolsFiltrSecond.appendChild(nameToolsFiltrTo);
   blockToolsFiltrSecond.appendChild(filtrTo);
 
-  toolsSorting.appendChild(blockTools);
+  toolsSorting.appendChild(blockToolsSort);
   toolsSorting.appendChild(blockSort);
-  blockTools.appendChild(nameTools);
-  blockTools.appendChild(selectInput);
+  blockToolsSort.appendChild(nameTools);
+  blockToolsSort.appendChild(selectInput);
   blockSort.appendChild(textTools);
   blockSort.appendChild(ListSort);
 
@@ -294,507 +287,15 @@ window.onload = async () => {
   createContainer.appendChild(blockDate);
   createContainer.appendChild(blockComplaints);
   createContainer.appendChild(addButton);
-  render();
+
+  render(listEntrie);
 };
 
-window.addEventListener(
-  "resize",
-  (winsize = () => {
-    const block = document.getElementsByClassName("blockSort");
-    if (window.screen.width < 580) {
-      block.blockTools.style.display = "none";
-    } else block.blockTools.style.display = "flex";
-  })
-);
-
-const render = () => {
-  while (contentList.firstChild) {
-    contentList.removeChild(contentList.lastChild);
-  }
-  listEntrie.map((item, index) => {
-    let { nameUser, nameDoctor, date, complaints, id } = listEntrie[index];
-
-    const container = document.createElement("div");
-    container.id = `entriesContainer-${index}`;
-    container.className = "entries-container";
-
-    const correctDate = moment(`${date}`).format("DD.MM.YYYY");
-
-    const nameClient = document.createElement("p");
-    const nameDoctorF = document.createElement("p");
-    const dateF = document.createElement("p");
-    const complaintsF = document.createElement("p");
-
-    nameClient.textContent = `${nameUser}`;
-    nameDoctorF.textContent = `${nameDoctor}`;
-    dateF.textContent = `${correctDate}`;
-    complaintsF.textContent = `${complaints}`;
-
-    const buttonArea = document.createElement("div");
-    buttonArea.id = "buttonArea";
-
-    const buttonEdit = document.createElement("button");
-    buttonEdit.id = "buttonEntries";
-    const imageEdit = document.createElement("img");
-    imageEdit.src = "/img/imgEntries/Edit.svg";
-    buttonEdit.appendChild(imageEdit);
-    buttonEdit.onclick = () => editFun(index);
-
-    const buttonDelete = document.createElement("button");
-    buttonDelete.id = "buttonEntries";
-    buttonDelete.onclick = () => {
-      deleteFun(id);
-    };
-    const imageDelete = document.createElement("img");
-    imageDelete.src = "/img/imgEntries/Delete.svg";
-    buttonDelete.appendChild(imageDelete);
-
-    container.appendChild(nameClient);
-    container.appendChild(nameDoctorF);
-    container.appendChild(dateF);
-    container.appendChild(complaintsF);
-    container.appendChild(buttonArea);
-    buttonArea.appendChild(buttonEdit);
-    contentList.appendChild(container);
-    buttonArea.appendChild(buttonDelete);
-  });
+const winsize = () => {
+  const block = document.getElementsByClassName("blockSort");
+  window.screen.width < 580
+    ? (block.blockTools.style.display = "none")
+    : (block.blockTools.style.display = "flex");
 };
 
-const addEntries = async (
-  inputName,
-  inputDoctor,
-  inputDate,
-  inputComplaints
-) => {
-  const checkPass = localStorage.getItem("token");
-  const checkLog = localStorage.getItem("login");
-
-  if (!checkLog || !checkPass) {
-    window.location.href = "loginPage.html";
-  }
-
-  let nameClient = inputName.value;
-  let nameDoctor = inputDoctor.value;
-  let date = inputDate.value;
-  let complaints = inputComplaints.value;
-
-  if (nameDoctor === "None") {
-    alert("Выберите врача");
-  } else {
-    if (nameClient && nameDoctor && date && complaints) {
-      const resp = await fetch("http://localhost:8080/api/entries/", {
-        method: "POST",
-        headers: {
-          Authorization: localStorage.getItem("token"),
-          "Content-Type": "application/json;charset=utf-8",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({
-          firstName: nameClient,
-          nameDoctor,
-          date,
-          complaints,
-        }),
-      });
-
-      const result = await resp.json();
-
-      listEntrie = result;
-    } else alert("Заполните все поля");
-  }
-
-  inputName.value = "";
-  nameDoctor = "";
-  inputDoctor.value = "";
-  date = "";
-  inputDate.value = moment().format("YYYY-MM-DD");
-  complaints = "";
-  inputComplaints.value = "";
-  render();
-};
-
-const deleteFun = async (id) => {
-  const checkPass = localStorage.getItem("token");
-  const checkLog = localStorage.getItem("login");
-
-  if (!checkLog || !checkPass) {
-    window.location.href = "loginPage.html";
-  }
-
-  const modal = document.createElement("div");
-  modal.id = "modal";
-  const modalDelete = document.createElement("div");
-  modalDelete.id = "modalEdit";
-  modal.appendChild(modalDelete);
-  mainContainer.appendChild(modal);
-  modal.style.display = "block";
-
-  const titleContainer = document.createElement("div");
-  titleContainer.id = "titleContainer";
-  const nameContainer = document.createElement("h1");
-  nameContainer.id = "nameContainer";
-  nameContainer.textContent = "Удалить прием";
-  modalDelete.appendChild(titleContainer);
-  titleContainer.appendChild(nameContainer);
-
-  const contentDelete = document.createElement("div");
-  contentDelete.id = "contentDelete";
-  modalDelete.appendChild(contentDelete);
-
-  const deleteMessage = document.createElement("p");
-  deleteMessage.id = "dialogMessafe";
-  deleteMessage.textContent = "Вы действительно хотите удалить прием?";
-  contentDelete.appendChild(deleteMessage);
-
-  const buttonAreaModal = document.createElement("div");
-  buttonAreaModal.id = "buttonAreaModal";
-  modalDelete.appendChild(buttonAreaModal);
-
-  const closeEdit = document.createElement("button");
-  closeEdit.id = "buttonCancel";
-  closeEdit.textContent = "Отмена";
-  closeEdit.onclick = () => {
-    modal.style.display = "none";
-  };
-  buttonAreaModal.appendChild(closeEdit);
-
-  const deleteButton = document.createElement("button");
-  deleteButton.id = "buttonAccess";
-  deleteButton.textContent = "Удалить";
-  deleteButton.onclick = async () => {
-    const resp = await fetch(
-      `http://localhost:8080/api/entries/delete?id=${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: localStorage.getItem("token"),
-          "Content-Type": "application/json;charset=utf-8",
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    );
-    const result = await resp.json();
-    listEntrie = result;
-
-    render();
-
-    modal.style.display = "none";
-  };
-  buttonAreaModal.appendChild(deleteButton);
-};
-
-const editFun = (index) => {
-  const checkPass = localStorage.getItem("token");
-  const checkLog = localStorage.getItem("login");
-
-  if (!checkLog || !checkPass) {
-    window.location.href = "loginPage.html";
-  }
-
-  const { nameUser, nameDoctor, date, complaints, id } = listEntrie[index];
-  const modal = document.createElement("div");
-  modal.id = "modal";
-  const modalEdit = document.createElement("div");
-  modalEdit.id = "modalEdit";
-  modal.appendChild(modalEdit);
-  mainContainer.appendChild(modal);
-  modal.style.display = "block";
-
-  const titleContainer = document.createElement("div");
-  titleContainer.id = "titleContainer";
-  const nameContainer = document.createElement("h1");
-  nameContainer.id = "nameContainer";
-  nameContainer.textContent = "Изменить прием";
-  modalEdit.appendChild(titleContainer);
-  titleContainer.appendChild(nameContainer);
-
-  const contentEdit = document.createElement("div");
-  contentEdit.id = "contentEdit";
-  modalEdit.appendChild(contentEdit);
-
-  const userNameBlock = document.createElement("div");
-  userNameBlock.id = "blockEdit";
-  contentEdit.appendChild(userNameBlock);
-
-  const textNameBlock = document.createElement("p");
-  textNameBlock.id = "nameBlock";
-  textNameBlock.textContent = "Имя:";
-  userNameBlock.appendChild(textNameBlock);
-
-  const inputUserName = document.createElement("input");
-  inputUserName.id = "inputEdit";
-  inputUserName.placeholder = nameUser;
-  inputUserName.addEventListener("change", inputValue(inputUserName));
-  userNameBlock.appendChild(inputUserName);
-
-  const doctorNameBlock = document.createElement("div");
-  doctorNameBlock.id = "blockEdit";
-  contentEdit.appendChild(doctorNameBlock);
-
-  const textDoctorNameBlock = document.createElement("p");
-  textDoctorNameBlock.id = "nameBlock";
-  textDoctorNameBlock.textContent = "Врач:";
-  doctorNameBlock.appendChild(textDoctorNameBlock);
-
-  const inputDoctorName = document.createElement("input");
-  inputDoctorName.id = "inputEdit";
-  inputDoctorName.placeholder = nameDoctor;
-  inputDoctorName.addEventListener("change", inputValue(inputDoctorName));
-  doctorNameBlock.appendChild(inputDoctorName);
-
-  const dateBlock = document.createElement("div");
-  dateBlock.id = "blockEdit";
-  contentEdit.appendChild(dateBlock);
-
-  const textDateBlock = document.createElement("p");
-  textDateBlock.id = "nameBlock";
-  textDateBlock.textContent = "Дата:";
-  dateBlock.appendChild(textDateBlock);
-
-  const inputDate = document.createElement("input");
-  inputDate.type = "date";
-  inputDate.id = "inputEdit";
-  inputDate.value = moment(date).format("YYYY-MM-DD");
-  dateBlock.appendChild(inputDate);
-
-  const complaintsBlock = document.createElement("div");
-  complaintsBlock.id = "blockEdit";
-  contentEdit.appendChild(complaintsBlock);
-
-  const textComplaintsBlock = document.createElement("p");
-  textComplaintsBlock.id = "nameBlock";
-  textComplaintsBlock.textContent = "Жалобы:";
-  complaintsBlock.appendChild(textComplaintsBlock);
-
-  const inputcomplaints = document.createElement("input");
-  inputcomplaints.id = "inputEdit";
-  inputcomplaints.placeholder = complaints;
-  inputcomplaints.addEventListener("change", inputValue(inputcomplaints));
-  complaintsBlock.appendChild(inputcomplaints);
-
-  const buttonAreaModal = document.createElement("div");
-  buttonAreaModal.id = "buttonAreaModal";
-  modalEdit.appendChild(buttonAreaModal);
-
-  const closeEdit = document.createElement("button");
-  closeEdit.id = "buttonCancel";
-  closeEdit.textContent = "Отмена";
-  closeEdit.onclick = () => {
-    modal.style.display = "none";
-  };
-  buttonAreaModal.appendChild(closeEdit);
-
-  const saveEdit = document.createElement("button");
-  saveEdit.id = "buttonAccess";
-  saveEdit.textContent = "Сохранить";
-  saveEdit.onclick = () => {
-    saveEditFun(inputUserName, inputDoctorName, date, inputcomplaints, id);
-    modal.style.display = "none";
-  };
-  buttonAreaModal.appendChild(saveEdit);
-};
-
-const saveEditFun = async (
-  inputUserName,
-  inputDoctorName,
-  date,
-  inputcomplaints,
-  id
-) => {
-  const checkPass = localStorage.getItem("token");
-  const checkLog = localStorage.getItem("login");
-
-  if (!checkLog || !checkPass) {
-    window.location.href = "loginPage.html";
-  }
-
-  const editField = [inputUserName, inputDoctorName, date, inputcomplaints, id];
-  editField.forEach((element) => {
-    if (!element.value) {
-      element.value = element.placeholder;
-    }
-  });
-
-  const resp = await fetch("http://localhost:8080/api/entries/update", {
-    method: "PATCH",
-    headers: {
-      Authorization: localStorage.getItem("token"),
-      "Content-Type": "application/json;charset=utf-8",
-      "Access-Control-Allow-Origin": "*",
-    },
-    body: JSON.stringify({
-      nameUser: inputUserName.value,
-      nameDoctor: inputDoctorName.value,
-      date,
-      complaints: inputcomplaints.value,
-      id,
-    }),
-  });
-
-  const result = await resp.json();
-  listEntrie = result;
-
-  render();
-};
-
-const inputValue = (a) => {
-  const valueEvent = (event) => {
-    a.value = event.target.value;
-  };
-  return valueEvent;
-};
-
-const sortFun = (a) => {
-  const checkPass = localStorage.getItem("token");
-  const checkLog = localStorage.getItem("login");
-
-  if (!checkLog || !checkPass) {
-    window.location.href = "loginPage.html";
-  }
-
-  const valueEvent = async (event) => {
-    a.value = event.target.value;
-    if (a.name === "selectInput") {
-      const parent = a.parentNode;
-      const parentMain = parent.parentNode;
-      if (a.value === "Имя") sortObj.filtrSort = "nameUser";
-      if (a.value === "Врач") sortObj.filtrSort = "nameDoctor";
-      if (a.value === "Дата") sortObj.filtrSort = "date";
-
-      if (a.value !== "None" || !a.value) {
-        parent.nextSibling.style.display = "flex";
-      } else {
-        sortObj.filtrSort = "id";
-        a.value = "";
-        parent.nextSibling.style.display = "none";
-        sortObj.direction = false;
-      }
-    } else {
-      if (sortObj.filtrSort !== "id") a.parentNode.style.display = "flex";
-      a.value !== "По возрастанию"
-        ? (sortObj.direction = false)
-        : (sortObj.direction = "ASC");
-    }
-
-    const resp = await fetch("http://localhost:8080/api/entries/sort", {
-      method: "POST",
-      headers: {
-        Authorization: localStorage.getItem("token"),
-        "Content-Type": "application/json;charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        direction: sortObj.direction,
-        filter: sortObj.filtrSort,
-      }),
-    });
-    const result = await resp.json();
-    listEntrie = result;
-
-    render();
-  };
-  return valueEvent;
-};
-
-const filretFun = async (a, b) => {
-  const checkPass = localStorage.getItem("token");
-  const checkLog = localStorage.getItem("login");
-
-  if (!checkLog || !checkPass) {
-    window.location.href = "loginPage.html";
-  }
-
-  valueEvent = (event) => {
-    a.value = event.target.value;
-    b.value = event.target.value;
-  };
-
-  let urlFetch = "http://localhost:8080/api/entries/getAllEntries";
-  let objFetch = {
-    method: "GET",
-    headers: {
-      Authorization: localStorage.getItem("token"),
-      "Content-Type": "application/json;charset=utf-8",
-      "Access-Control-Allow-Origin": "*",
-    },
-  };
-
-  if (a.value || b.value) {
-    objFetch.method = "POST";
-    urlFetch = "http://localhost:8080/api/entries/filter";
-    objFetch.body = JSON.stringify({ dateStart: a.value, dateEnd: b.value });
-  }
-
-  const resp = await fetch(urlFetch, objFetch);
-  const result = await resp.json();
-  listEntrie = result;
-
-  render();
-};
-
-const cleanFilretFun = async (a, b) => {
-  const checkPass = localStorage.getItem("token");
-  const checkLog = localStorage.getItem("login");
-
-  if (!checkLog || !checkPass) {
-    window.location.href = "loginPage.html";
-  }
-
-  const button = document.getElementById("buttoncleanFiltr");
-  const parent = button.parentNode;
-  const mainParent = parent.parentNode;
-  valueEvent = (event) => {
-    a.value = event.target.value;
-    b.value = event.target.value;
-  };
-
-  a.value = "";
-  b.value = "";
-  const resp = await fetch("http://localhost:8080/api/entries/getAllEntries", {
-    method: "GET",
-    headers: {
-      Authorization: localStorage.getItem("token"),
-      "Content-Type": "application/json;charset=utf-8",
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
-
-  const result = await resp.json();
-  listEntrie = result;
-  mainParent.childNodes[2].style.display = "flex";
-  mainParent.lastChild.style.display = "none";
-
-  render();
-};
-
-const openFun = (a) => {
-  const checkPass = localStorage.getItem("token");
-  const checkLog = localStorage.getItem("login");
-
-  if (!checkLog || !checkPass) {
-    window.location.href = "loginPage.html";
-  }
-
-  const button = document.getElementById("openButton");
-  parent = button.parentNode;
-
-  a.style.display === "none"
-    ? ((a.style.display = "flex"), (button.style.display = "none"))
-    : (a.style.display = "none");
-};
-
-const openFunSort = (a) => {
-  const checkPass = localStorage.getItem("token");
-  const checkLog = localStorage.getItem("login");
-
-  if (!checkLog || !checkPass) {
-    window.location.href = "loginPage.html";
-  }
-
-  const button = document.getElementById("buttonOpenSort");
-  parent = button.parentNode;
-
-  a.style.display === "flex"
-    ? (a.style.display = "none")
-    : (a.style.display = "flex");
-};
+window.addEventListener("resize", winsize);

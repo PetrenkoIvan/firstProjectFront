@@ -1,3 +1,5 @@
+import { inputValue, loginFun } from "./controllers/user_controllers.js";
+
 let flag = 0;
 
 window.onload = async () => {
@@ -61,42 +63,4 @@ let render = () => {
   loginArea.appendChild(fieldPassword);
   loginArea.appendChild(buttonLogin);
   loginArea.appendChild(buttonRegistration);
-};
-
-const loginFun = async (a, b) => {
-  try {
-    const resp = await fetch("http://localhost:8080/api/users/login", {
-      method: "POST",
-      headers: {
-        authorization: localStorage.getItem("token"),
-        "Content-Type": "application/json;charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-
-      body: JSON.stringify({
-        login: a.value,
-        password: b.value,
-      }),
-    });
-    let result = await resp.json();
-    a.value = "";
-    b.value = "";
-    login = "";
-    password = "";
-
-    if (result.token !== undefined && result.login !== undefined) {
-      localStorage.setItem("token", result.token);
-      localStorage.setItem("login", result.login);
-      window.location.href = "personalArea.html";
-    } else alert("Проверте правильность введенных данных");
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const inputValue = (a) => {
-  const valueEvent = (event) => {
-    a.value = event.target.value;
-  };
-  return valueEvent;
 };
