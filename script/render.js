@@ -1,9 +1,4 @@
-import {
-  deleteFun,
-  editFun,
-} from "./controllers/entries_controllers.js";
-
-
+import { deleteFun, editFun } from "./controllers/entries_controllers.js";
 
 export const render = (a) => {
   while (contentList.firstChild) {
@@ -40,9 +35,7 @@ export const render = (a) => {
 
     const buttonDelete = document.createElement("button");
     buttonDelete.id = "buttonEntries";
-    buttonDelete.onclick = () => {
-      deleteFun(id, a);
-    };
+    buttonDelete.onclick = () => deleteFun(id, a);
     const imageDelete = document.createElement("img");
     imageDelete.src = "/img/imgEntries/Delete.svg";
     buttonDelete.appendChild(imageDelete);

@@ -15,7 +15,6 @@ const openFunSort = (a) => {
 };
 
 const openFun = (a) => {
-  console.log();
   const checkPass = localStorage.getItem("token");
   const checkLog = localStorage.getItem("login");
 

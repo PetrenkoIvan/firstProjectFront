@@ -1,5 +1,4 @@
-import {inputValue, checkFun} from "./controllers/user_controllers.js"
-
+import { inputValue, checkFun } from "./controllers/user_controllers.js";
 
 window.onload = async () => {
   const mainContainer = document.getElementById("mainContainer");

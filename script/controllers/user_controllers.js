@@ -1,6 +1,5 @@
 const loginFun = async (a, b) => {
   try {
-    console.log(a.value, b.value);
     const resp = await fetch("http://localhost:8080/api/users/login", {
       method: "POST",
       headers: {
@@ -24,7 +23,6 @@ const loginFun = async (a, b) => {
       window.location.href = "personalArea.html";
     } else alert("Проверте правильность введенных данных");
   } catch (error) {
-    console.log(error);
   }
 };
 
